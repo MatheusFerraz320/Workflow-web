@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import { Login } from '@/pages/login/Login';
 import { Home } from '@/pages/home/Home';
 import { Register } from '@/pages/register/Register';
+import { Users } from '@/pages/users/Users';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { LoadingScreen } from '@/components/LoadingScreen';
@@ -35,6 +36,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
               <Route path="/register" element={<Register />} />
+              <Route path="/users" element={<Users />} />
             </Route>
           </Route>
         </Route>

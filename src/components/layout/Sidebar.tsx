@@ -9,10 +9,10 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  UserPlus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 const navItems = [
   { icon: Home, label: 'Início', path: '/' },
@@ -41,6 +41,7 @@ export function Sidebar() {
   function handleLogout() {
     logout();
     navigate('/login');
+    toast.success('Logout realizado com sucesso!');
   }
 
   return (
@@ -118,36 +119,23 @@ export function Sidebar() {
             {!collapsed && 'Favoritos'}
           </Link>
         </div>
-
-        {user?.role === 'ADMIN' && (
-          <div className="mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-            <Link
-              to="/register"
-              className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                location.pathname === '/register'
-                  ? 'bg-b2-50 text-b2-700 dark:bg-b2-950/30 dark:text-b2-400'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100',
-              )}
-            >
-              <UserPlus className="h-5 w-5 shrink-0" />
-              {!collapsed && 'Novo Colaborador'}
-            </Link>
-          </div>
-        )}
       </nav>
 
       <div className="space-y-1 border-t border-gray-200 p-3 dark:border-gray-700">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center justify-center gap-3 rounded-lg p-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+          className="flex w-full items-center justify-center gap-3 rounded-lg p-2 text-sm text-gray-600 
+          hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400
+           dark:hover:bg-gray-800 dark:hover:text-gray-100"
         >
           <LogOut className="h-5 w-5 shrink-0" />
           {!collapsed && 'Sair'}
         </button>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="flex w-full items-center justify-center rounded-lg p-2 text-gray-700 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+          className="flex w-full items-center justify-center 
+          rounded-lg p-2 text-gray-700 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-400 
+          dark:hover:bg-gray-800 dark:hover:text-gray-300"
         >
           {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>

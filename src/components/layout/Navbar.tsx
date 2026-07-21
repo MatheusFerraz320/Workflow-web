@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Search, Bell, Plus, UserPlus, Sun, Moon } from 'lucide-react';
+import { Search, Bell, Plus, UserPlus, Sun, Moon , Users} from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 
@@ -30,6 +30,15 @@ export function Navbar() {
           >
             <UserPlus className="h-4 w-4" />
             <span className="hidden sm:inline">Registrar usuário</span>
+          </Link>
+        )}
+          {user?.role === 'ADMIN' && (
+          <Link
+            to="/users"
+            className="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+          >
+            <Users className="h-4 w-4" />
+            <span className="hidden sm:inline">Colaboradores</span>
           </Link>
         )}
         <button
