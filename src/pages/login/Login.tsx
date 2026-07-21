@@ -1,46 +1,29 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import placeholderImg from '@/assets/placeholder-login.svg';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passWordError , setPassWordError] = useState('');
-  const [emailError , setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setError('');
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!email) {
-        setEmailError('Preencha o email');
-        toast.warning('Preencha todos o email');
-      }
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message);
-        setError(data.message);
-        return;
-      }
-
-      localStorage.setItem('token', data.access_token);
-      window.location.href = '/';
-    } catch {
-      setError('Erro ao conectar com o servidor');
-      toast.error("Erro ao conectar com o servidor");
+      await login(email, password);
+      toast.success('Login realizado com sucesso!');
+      navigate('/');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erro ao conectar com o servidor';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -72,8 +55,6 @@ export function Login() {
             required
           />
 
-          {emailError && <p className="text-sm text-red-500">{emailError}</p>}
-
           <Input
             id="password"
             label="Senha"
@@ -83,10 +64,6 @@ export function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
-          {passWordError && <p className="text-sm text-red-500">{passWordError}</p>}
-
-          {error && <p className="text-sm text-red-500">{error}</p>}
 
           <Button type="submit" loading={loading}>
             Entrar

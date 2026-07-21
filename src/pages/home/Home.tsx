@@ -1,4 +1,5 @@
 import { Plus } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const boards = [
   { name: 'Tráfego Pago', color: '#8b5cf6', tasks: 4, date: 'Criado em 19/07/2026' },
@@ -7,10 +8,13 @@ const boards = [
 ];
 
 export function Home() {
+  const { user } = useAuth();
+  const firstName = user?.name.split(' ')[0] ?? 'Usuário';
+
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Olá, Matheus 👋</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Olá, {firstName} 👋</h1>
         <p className="mt-1 text-gray-500">Bem-vindo ao B2.Work</p>
       </div>
 
