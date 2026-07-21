@@ -25,5 +25,3 @@ export function Button({ children, loading, className, disabled, ...props }: But
     </button>
   );
 }
-
-

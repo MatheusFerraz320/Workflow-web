@@ -21,17 +21,16 @@ type Errors = {
   role?: string;
 };
 
-const initialErrors : Errors = {};
+const initialErrors: Errors = {};
 
 export function Register() {
   const [name, setName] = useState('');
-  const [errors , setErrors] = useState<Errors>(initialErrors);
+  const [errors, setErrors] = useState<Errors>(initialErrors);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('USER');
   const [loading, setLoading] = useState(false);
   const token = useAuthStore((s) => s.token);
-
 
   const validateForm = (): boolean => {
     const newErrors: Errors = {};
@@ -59,7 +58,7 @@ export function Register() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; //verifico isso no if do send
+    return Object.keys(newErrors).length === 0;
   };
 
   async function handleSubmit(e: React.FormEvent) {
@@ -76,7 +75,7 @@ export function Register() {
         body: JSON.stringify({ name, email, password, role }),
       });
 
-      if(!validateForm()) {
+      if (!validateForm()) {
         toast.warning('Preencha todos os campos corretamente');
         return;
       }
@@ -92,6 +91,7 @@ export function Register() {
       setEmail('');
       setPassword('');
       setRole('USER');
+      setErrors({});
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro ao conectar com o servidor';
       toast.error(message);
@@ -104,17 +104,17 @@ export function Register() {
     <div className="mx-auto max-w-2xl">
       <div className="mb-8">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-b2-100">
-            <UserPlus className="h-5 w-5 text-b2-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-b2-100 dark:bg-b2-900/40">
+            <UserPlus className="h-5 w-5 text-b2-600 dark:text-b2-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Cadastrar Colaborador</h1>
-            <p className="text-sm text-gray-500">Preencha os dados para criar uma nova conta</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Cadastrar Colaborador</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Preencha os dados para criar uma nova conta</p>
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid gap-4 sm:grid-cols-2">
             <Input
@@ -151,14 +151,14 @@ export function Register() {
             />
             {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="role" className="text-sm font-medium text-gray-700">
+              <label htmlFor="role" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Cargo
               </label>
               <select
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value as UserRole)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
               >
                 {roleOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>
