@@ -1,0 +1,60 @@
+import type { User } from './user';
+
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+
+export type ItemStatus = 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'DONE';
+
+export interface Subtask {
+  id: string;
+  title: string;
+  completed: boolean;
+  itemId: string;
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  authorId: string;
+  itemId: string;
+  createdAt: string;
+  updatedAt: string;
+  author: User;
+}
+
+export interface Item {
+  id: string;
+  title: string;
+  description?: string | null;
+  priority: Priority;
+  status: ItemStatus;
+  assigneeId?: string | null;
+  dueDate?: string | null;
+  boardId: string;
+  position: number;
+  createdAt: string;
+  updatedAt: string;
+  assignee?: User | null;
+  subtasks?: Subtask[];
+  comments?: Comment[];
+}
+
+export interface CreateItemDto {
+  title: string;
+  description?: string;
+  priority?: Priority;
+  status?: ItemStatus;
+  assigneeId?: string;
+  dueDate?: string;
+  boardId: string;
+  position?: number;
+}
+
+export interface UpdateItemDto {
+  title?: string;
+  description?: string;
+  priority?: Priority;
+  status?: ItemStatus;
+  assigneeId?: string;
+  dueDate?: string;
+  position?: number;
+}

@@ -44,7 +44,7 @@ export function EditBoardModal({ open, board, onClose }: EditBoardModalProps) {
 
     setLoading(true);
     try {
-      await updateBoard(board.id, {
+      await updateBoard(board!.id, {
         name: name.trim(),
         description: description.trim() || undefined,
         color,
