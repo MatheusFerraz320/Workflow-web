@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
-  LayoutGrid,
-  Inbox,
   LayoutDashboard,
   ChevronLeft,
   ChevronRight,
   LogOut,
+  User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,8 +15,7 @@ import { toast } from 'sonner';
 
 const navItems = [
   { icon: Home, label: 'Início', path: '/' },
-  { icon: LayoutGrid, label: 'Meus Trabalhos', path: '/my-work' },
-  { icon: Inbox, label: 'Inbox', path: '/inbox' },
+  { icon: User, label: 'Meu Perfil', path: '/profile' },
 ];
 
 const roleLabels: Record<string, string> = {
@@ -51,7 +49,10 @@ export function Sidebar() {
       )}
     >
 
-      <div className="flex flex-col items-center gap-2 border-b border-gray-200 px-4 py-4 dark:border-gray-700">
+      <Link
+        to="/profile"
+        className="flex flex-col items-center gap-2 border-b border-gray-200 px-4 py-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/50"
+      >
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xl font-bold text-b2-700 dark:bg-b2-900/40 dark:text-b2-400">
           {initials}
         </div>
@@ -61,7 +62,7 @@ export function Sidebar() {
             <p className="text-xs text-gray-500 dark:text-gray-400">{roleLabels[user.role] ?? user.role}</p>
           </div>
         )}
-      </div>
+      </Link>
 
       <nav className="flex-1 space-y-1 p-2">
         {navItems.map((item) => (

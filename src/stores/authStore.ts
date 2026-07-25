@@ -11,6 +11,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   loadUser: () => Promise<void>;
+  updateMe: (dto: { name?: string; email?: string; password?: string }) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -63,5 +64,27 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.removeItem('token');
       set({ user: null, token: null, isLoading: false });
     }
+  },
+
+  updateMe: async (dto) => {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Não autenticado');
+
+    const res = await fetch(`${API_URL}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dto),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Erro ao atualizar perfil');
+    }
+
+    set({ user: data });
   },
 }));

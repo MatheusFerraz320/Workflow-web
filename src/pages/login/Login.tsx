@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import placeholderImg from '@/assets/placeholder-login.svg';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -31,16 +30,24 @@ export function Login() {
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-950">
-      <div className="hidden w-1/2 flex-col items-center justify-center bg-gradient-to-br from-b2-950 to-b2-700 p-12 md:flex">
-        <img src={placeholderImg} alt="" className="mb-8 w-64 opacity-80" />
-        <h1 className="mb-3 text-4xl font-bold text-white">B2.Work</h1>
-        <p className="max-w-xs text-center text-lg text-b2-200">
-          Gerencie seus workflows com eficiencia
-        </p>
+      <div className="relative hidden w-1/2 items-center justify-center overflow-hidden md:flex">
+        <img
+          src="loginScreen.jpeg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-b2-950/80 to-b2-700/60" />
+
+        <div className="relative z-10 flex w-full flex-col items-center justify-center p-12 text-center">
+          <h1 className="mb-3 text-4xl font-bold text-white drop-shadow-lg">B2 WorkFlow</h1>
+          <p className="max-w-xs text-lg leading-relaxed text-b2-100 drop-shadow">
+            Gerencie seus workflows com eficiência
+          </p>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center px-6">
-        <h2 className="mb-8 text-2xl font-bold text-gray-900 dark:text-gray-100 md:hidden">B2.Work</h2>
+        <h2 className="mb-8 text-2xl font-bold text-gray-900 dark:text-gray-100 md:hidden">B2WorkFlow</h2>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
           <h2 className="hidden text-3xl font-bold text-gray-900 dark:text-gray-100 md:block">Login</h2>

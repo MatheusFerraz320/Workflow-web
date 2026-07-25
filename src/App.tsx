@@ -7,6 +7,7 @@ import { BoardDetail } from '@/pages/boards/BoardDetail';
 import { ItemDetailPage } from '@/pages/items/ItemDetailPage';
 import { Register } from '@/pages/register/Register';
 import { Users } from '@/pages/users/Users';
+import { ProfilePage } from '@/pages/profile/ProfilePage';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { LoadingScreen } from '@/components/LoadingScreen';
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/boards/:id" element={<BoardDetail />} />
             <Route path="/boards/:boardId/items/:itemId" element={<ItemDetailPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
               <Route path="/register" element={<Register />} />
               <Route path="/users" element={<Users />} />
