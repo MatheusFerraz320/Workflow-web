@@ -40,15 +40,11 @@ export function CreateItemModal({ open, boardId, initialStatus = 'TODO', users =
   const createItem = useItemStore((s) => s.createItem);
 
   if (!open) return null;
-  const nowDate = new Date().toISOString().split('T')[0];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) return;
-    if (dueDate && dueDate < nowDate) {
-      toast.error('Prazo não pode ser menor que a data atual');
-      return;
-    }
+
 
     setLoading(true);
     try {

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Item, CreateItemDto, UpdateItemDto } from '@/types/item';
+import type { Item, Comment, CreateItemDto, UpdateItemDto, CreateCommentDto } from '@/types/item';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,6 +13,8 @@ interface ItemState {
   createItem: (dto: CreateItemDto) => Promise<Item>;
   updateItem: (id: string, dto: UpdateItemDto) => Promise<Item>;
   deleteItem: (id: string) => Promise<void>;
+  createComment: (dto: CreateCommentDto) => Promise<Comment>;
+  deleteComment: (commentId: string) => Promise<void>;
 }
 
 function getAuthHeaders(): Record<string, string> {
@@ -102,6 +104,41 @@ export const useItemStore = create<ItemState>((set) => ({
     set((state) => ({
       itemsByBoard: state.itemsByBoard.filter((i) => i.id !== id),
       currentItem: state.currentItem?.id === id ? null : state.currentItem,
+    }));
+  },
+
+  createComment: async (dto) => {
+    const res = await fetch(`${API_URL}/comments/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify(dto),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || 'Erro ao criar comentário');
+    }
+    const comment = data as Comment;
+    set((state) => ({
+      currentItem: state.currentItem
+        ? { ...state.currentItem, comments: [...(state.currentItem.comments ?? []), comment] }
+        : state.currentItem,
+    }));
+    return comment;
+  },
+
+  deleteComment: async (commentId) => {
+    const res = await fetch(`${API_URL}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || 'Erro ao deletar comentário');
+    }
+    set((state) => ({
+      currentItem: state.currentItem
+        ? { ...state.currentItem, comments: state.currentItem.comments?.filter((c) => c.id !== commentId) ?? [] }
+        : state.currentItem,
     }));
   },
 }));

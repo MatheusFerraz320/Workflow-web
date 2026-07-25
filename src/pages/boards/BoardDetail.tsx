@@ -5,12 +5,12 @@ import { toast } from 'sonner';
 import { useBoardStore } from '@/stores/boardStore';
 import { useItemStore } from '@/stores/itemStore';
 import { useUsers } from '@/hooks/useUsers';
-import { ItemCard, CreateItemModal, EditItemModal, ItemDetailModal } from '@/components/boards/items';
+import { ItemCard, CreateItemModal, EditItemModal } from '@/components/boards/items';
 import type { Board } from '@/types/board';
 import type { Item, ItemStatus, Priority } from '@/types/item';
 
 const columns: { status: ItemStatus; label: string; dotColor: string; headerBg: string; headerText: string }[] = [
-  { status: 'TODO', label: 'A Fazer', dotColor: 'bg-gray-500', headerBg: 'bg-gray-50 dark:bg-gray-800', headerText: 'text-gray-700 dark:text-gray-300' },
+  { status: 'TODO', label: 'Pendentes', dotColor: 'bg-gray-500', headerBg: 'bg-gray-50 dark:bg-gray-800', headerText: 'text-gray-700 dark:text-gray-300' },
   { status: 'IN_PROGRESS', label: 'Em Progresso', dotColor: 'bg-blue-500', headerBg: 'bg-blue-50 dark:bg-blue-950/30', headerText: 'text-blue-700 dark:text-blue-300' },
   { status: 'REVIEW', label: 'Revisão', dotColor: 'bg-purple-500', headerBg: 'bg-purple-50 dark:bg-purple-950/30', headerText: 'text-purple-700 dark:text-purple-300' },
   { status: 'DONE', label: 'Concluído', dotColor: 'bg-green-500', headerBg: 'bg-green-50 dark:bg-green-950/30', headerText: 'text-green-700 dark:text-green-300' },
@@ -35,7 +35,6 @@ export function BoardDetail() {
   const [createOpen, setCreateOpen] = useState(false);
   const [createStatus, setCreateStatus] = useState<ItemStatus>('TODO');
   const [editItem, setEditItem] = useState<Item | null>(null);
-  const [detailItemId, setDetailItemId] = useState<string | null>(null);
 
   const [search, setSearch] = useState('');
   const [filterPriority, setFilterPriority] = useState<Priority | 'ALL'>('ALL');
@@ -259,7 +258,7 @@ export function BoardDetail() {
                         <ItemCard
                           key={item.id}
                           item={item}
-                          onClick={(i) => setDetailItemId(i.id)}
+                          onClick={(i) => navigate(`/boards/${board.id}/items/${i.id}`)}
                           onEdit={setEditItem}
                           onDelete={handleDeleteItem}
                         />
@@ -290,20 +289,6 @@ export function BoardDetail() {
         item={editItem}
         users={users}
         onClose={() => setEditItem(null)}
-      />
-
-      <ItemDetailModal
-        open={!!detailItemId}
-        itemId={detailItemId}
-        onClose={() => setDetailItemId(null)}
-        onEdit={(item) => {
-          setDetailItemId(null);
-          setEditItem(item);
-        }}
-        onDelete={(item) => {
-          setDetailItemId(null);
-          handleDeleteItem(item);
-        }}
       />
     </div>
   );

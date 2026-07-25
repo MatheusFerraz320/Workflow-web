@@ -50,12 +50,6 @@ export function Sidebar() {
         collapsed ? 'w-16' : 'w-64',
       )}
     >
-      <div className="flex h-14 items-center gap-2 border-b border-gray-200 px-4 dark:border-gray-700">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-b2-600 text-sm font-bold text-white">
-          B2
-        </div>
-        {!collapsed && <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">B2.Work</span>}
-      </div>
 
       <div className="flex flex-col items-center gap-2 border-b border-gray-200 px-4 py-4 dark:border-gray-700">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xl font-bold text-b2-700 dark:bg-b2-900/40 dark:text-b2-400">

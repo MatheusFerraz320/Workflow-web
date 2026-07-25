@@ -63,6 +63,12 @@ export function Register() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!validateForm()) {
+      toast.warning('Preencha todos os campos corretamente');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -74,11 +80,6 @@ export function Register() {
         },
         body: JSON.stringify({ name, email, password, role }),
       });
-
-      if (!validateForm()) {
-        toast.warning('Preencha todos os campos corretamente');
-        return;
-      }
 
       const data = await res.json();
 

@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import { Login } from '@/pages/login/Login';
 import { Home } from '@/pages/home/Home';
 import { BoardDetail } from '@/pages/boards/BoardDetail';
+import { ItemDetailPage } from '@/pages/items/ItemDetailPage';
 import { Register } from '@/pages/register/Register';
 import { Users } from '@/pages/users/Users';
 import { Layout } from '@/components/layout/Layout';
@@ -36,6 +37,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/boards/:id" element={<BoardDetail />} />
+            <Route path="/boards/:boardId/items/:itemId" element={<ItemDetailPage />} />
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
               <Route path="/register" element={<Register />} />
               <Route path="/users" element={<Users />} />

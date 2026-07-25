@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Users as UsersIcon, Search, Eye, Trash2, Loader2, UserX } from 'lucide-react';
+import { Users as UsersIcon, Search, Pencil, Trash2, Loader2, UserX } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/authStore';
+import { useUserStore } from '@/stores/userStore';
+import { EditUserModal } from '@/components/users/EditUserModal';
 import type { User, UserRole } from '@/types/user';
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 const roleConfig: Record<UserRole, { label: string; className: string }> = {
   ADMIN: {
@@ -56,35 +56,14 @@ function getAvatarColor(name: string): string {
 }
 
 export function Users() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { users, isLoading, fetchUsers, deleteUser } = useUserStore();
+  const currentUser = useAuthStore((s) => s.user);
   const [search, setSearch] = useState('');
-  const token = useAuthStore((s) => s.token);
+  const [editUser, setEditUser] = useState<User | null>(null);
 
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const res = await fetch(`${API_URL}/users`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.message);
-        }
-
-        const data: User[] = await res.json();
-        setUsers(data);
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Erro ao carregar colaboradores';
-        toast.error(message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchUsers();
-  }, [token]);
+  }, [fetchUsers]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -92,6 +71,21 @@ export function Users() {
       (u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q),
     );
   }, [users, search]);
+
+  async function handleDeleteUser(user: User) {
+    if (user.id === currentUser?.id) {
+      toast.warning('Você não pode excluir seu próprio usuário');
+      return;
+    }
+    if (!confirm(`Deseja excluir o colaborador "${user.name}"?`)) return;
+    try {
+      await deleteUser(user.id);
+      toast.success('Colaborador excluído com sucesso!');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erro ao excluir colaborador';
+      toast.error(message);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -122,7 +116,7 @@ export function Users() {
         </div>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
         </div>
@@ -171,12 +165,14 @@ export function Users() {
                 </span>
                 <div className="flex items-center justify-end gap-1">
                   <button
+                    onClick={() => setEditUser(user)}
                     className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                    title="Ver detalhes"
+                    title="Editar"
                   >
-                    <Eye className="h-4 w-4" />
+                    <Pencil className="h-4 w-4" />
                   </button>
                   <button
+                    onClick={() => handleDeleteUser(user)}
                     className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                     title="Excluir"
                   >
@@ -209,12 +205,14 @@ export function Users() {
                   </div>
                   <div className="flex items-center gap-1">
                     <button
+                      onClick={() => setEditUser(user)}
                       className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                      title="Ver detalhes"
+                      title="Editar"
                     >
-                      <Eye className="h-4 w-4" />
+                      <Pencil className="h-4 w-4" />
                     </button>
                     <button
+                      onClick={() => handleDeleteUser(user)}
                       className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                       title="Excluir"
                     >
@@ -238,12 +236,18 @@ export function Users() {
         </>
       )}
 
-      {!loading && filtered.length > 0 && (
+      {!isLoading && filtered.length > 0 && (
         <p className="mt-4 text-center text-sm text-gray-400 dark:text-gray-500">
           {filtered.length} {filtered.length === 1 ? 'colaborador' : 'colaboradores'}
           {search && ` encontrado${filtered.length === 1 ? '' : 's'}`}
         </p>
       )}
+
+      <EditUserModal
+        open={!!editUser}
+        user={editUser}
+        onClose={() => setEditUser(null)}
+      />
     </div>
   );
 }

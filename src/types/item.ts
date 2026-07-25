@@ -58,3 +58,8 @@ export interface UpdateItemDto {
   dueDate?: string;
   position?: number;
 }
+
+export interface CreateCommentDto {
+  content: string;
+  itemId: string;
+}
