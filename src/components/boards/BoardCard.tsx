@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, LayoutDashboard, ArrowRight } from 'lucide-react';
 import type { Board } from '@/types/board';
 
 interface BoardCardProps {
@@ -22,12 +22,15 @@ export function BoardCard({ board, onEdit, onDelete }: BoardCardProps) {
   return (
     <div
       onClick={() => navigate(`/boards/${board.id}`)}
-      className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-600"
+      className="group cursor-pointer rounded-2xl border border-gray-200 border-l-4 bg-white p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:hover:shadow-gray-900/50"
+      style={{ borderLeftColor: board.color }}
     >
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="h-3 w-3 rounded-full" style={{ backgroundColor: board.color }} />
-          <h3 className="font-medium text-gray-900 dark:text-gray-100">{board.name}</h3>
+      <div className="mb-4 flex items-start justify-between">
+        <div
+          className="flex h-12 w-12 items-center justify-center rounded-xl"
+          style={{ backgroundColor: `${board.color}15` }}
+        >
+          <LayoutDashboard className="h-6 w-6" style={{ color: board.color }} />
         </div>
         <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
           <button
@@ -35,29 +38,48 @@ export function BoardCard({ board, onEdit, onDelete }: BoardCardProps) {
               e.stopPropagation();
               onEdit(board);
             }}
-            className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
             title="Editar"
           >
-            <Pencil className="h-3.5 w-3.5" />
+            <Pencil className="h-4 w-4" />
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
               onDelete(board);
             }}
-            className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
             title="Excluir"
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            <Trash2 className="h-4 w-4" />
           </button>
         </div>
       </div>
+
+      <h3 className="mb-1 text-lg font-bold text-gray-900 dark:text-gray-100">
+        {board.name}
+      </h3>
+
       {board.description && (
-        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+        <p className="mb-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400 line-clamp-2">
           {board.description}
         </p>
       )}
-      <p className="text-xs text-gray-400 dark:text-gray-500">Criado em {formatDate(board.createdAt)}</p>
+
+      {!board.description && <div className="mb-4" />}
+
+      <div className="flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
+        <div className="flex items-center gap-2">
+          <span
+            className="h-2.5 w-2.5 rounded-full"
+            style={{ backgroundColor: board.color }}
+          />
+          <span className="text-xs text-gray-400 dark:text-gray-500">
+            Criado em {formatDate(board.createdAt)}
+          </span>
+        </div>
+        <ArrowRight className="h-4 w-4 text-gray-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-b2-600 dark:text-gray-600 dark:group-hover:text-b2-400" />
+      </div>
     </div>
   );
 }
