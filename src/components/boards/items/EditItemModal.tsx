@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
+import { RichTextEditor } from '@/components/ui/RichTextEditor';
 import { useItemStore } from '@/stores/itemStore';
 import { toast } from 'sonner';
 import type { Item, Priority, ItemStatus, UpdateItemDto } from '@/types/item';
@@ -139,25 +140,14 @@ export function EditItemModal({ open, item, users = [], onClose }: EditItemModal
 
           {/* Descrição */}
           <div className="flex flex-col gap-2">
-            <label
-              htmlFor="item-description"
-              className="text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Descrição
             </label>
-            <div className="relative">
-              <span className="pointer-events-none absolute left-4 top-4 text-gray-400 dark:text-gray-500">
-                <AlignLeft className="h-4 w-4" />
-              </span>
-              <textarea
-                id="item-description"
-                placeholder="Descreva o item em detalhes..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={5}
-                className="w-full resize-none rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-b2-500 focus:ring-4 focus:ring-b2-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-b2-500 dark:focus:ring-b2-500/10"
-              />
-            </div>
+            <RichTextEditor
+              content={description}
+              onChange={setDescription}
+              placeholder="Descreva o item em detalhes..."
+            />
           </div>
 
           {/* Prioridade + Status */}
