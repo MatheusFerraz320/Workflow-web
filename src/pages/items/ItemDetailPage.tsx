@@ -148,7 +148,7 @@ export function ItemDetailPage() {
     if (!stripped || !itemId) return;
     setIsSubmitting(true);
     try {
-      await createComment({ text: commentText.trim(), itemId });
+      await createComment({ content: commentText.trim(), itemId });
       setCommentText('');
       toast.success('Comentário enviado!');
     } catch (err) {
@@ -171,6 +171,7 @@ export function ItemDetailPage() {
   }
 
   async function handleFieldUpdate(field: string, value: string | undefined) {
+    if (!item) return;
     try {
       await updateItem(item.id, { [field]: value });
       toast.success('Item atualizado!');
@@ -297,20 +298,26 @@ export function ItemDetailPage() {
                 />
               </div>
             </div>
-          )}
 
-          {/* Activity Section */}
-          <div id="comment-section" className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-            <div className="flex items-center gap-2 border-b border-gray-100 px-5 py-3 dark:border-gray-800">
-              <MessageSquare className="h-4 w-4 text-gray-400 dark:text-gray-500" />
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                Atividade
-              </h3>
-              {commentCount > 0 && (
-                <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-                  {commentCount}
-                </span>
-              )}
+            <div className="mx-5 mt-4 flex items-center gap-1 border-t border-gray-100 pt-3 sm:mx-6 dark:border-gray-800">
+              <button
+                onClick={() => commentInputRef.current?.focus()}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Comentar{commentCount > 0 && ` (${commentCount})`}
+              </button>
+              <button
+                onClick={() => navigate(`/boards/${boardId}/items/${itemId}/edit`)}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                <Pencil className="h-4 w-4" />
+                Editar
+              </button>
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400">
+                <Trash2 className="h-4 w-4" />
+                Excluir
+              </button>
             </div>
 
             {/* Comment Input */}

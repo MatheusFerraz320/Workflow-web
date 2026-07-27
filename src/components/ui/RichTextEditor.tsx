@@ -101,7 +101,6 @@ export function RichTextEditor({
 
   return (
     <div className={cn('overflow-hidden rounded-xl border border-gray-200 bg-white transition-all focus-within:border-b2-500 focus-within:ring-4 focus-within:ring-b2-500/10 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-b2-500 dark:focus-within:ring-b2-500/10', className)}>
-      {/* Toolbar */}
       <div className="flex items-center gap-0.5 border-b border-gray-100 px-2 py-1.5 dark:border-gray-800">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -167,7 +166,6 @@ export function RichTextEditor({
         </ToolbarButton>
       </div>
 
-      {/* Editor */}
       <EditorContent editor={editor} />
     </div>
   );

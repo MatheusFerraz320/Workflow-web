@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useBoardStore } from '@/stores/boardStore';
 import { useItemStore } from '@/stores/itemStore';
 import { useUsers } from '@/hooks/useUsers';
-import { ItemCard, CreateItemModal, EditItemModal } from '@/components/boards/items';
+import { ItemCard, CreateItemModal } from '@/components/boards/items';
 import type { Board } from '@/types/board';
 import type { Item, ItemStatus, Priority } from '@/types/item';
 
@@ -34,8 +34,6 @@ export function BoardDetail() {
 
   const [createOpen, setCreateOpen] = useState(false);
   const [createStatus, setCreateStatus] = useState<ItemStatus>('TODO');
-  const [editItem, setEditItem] = useState<Item | null>(null);
-
   const [search, setSearch] = useState('');
   const [filterPriority, setFilterPriority] = useState<Priority | 'ALL'>('ALL');
   const [filterAssignee, setFilterAssignee] = useState<string | 'ALL'>('ALL');
@@ -259,7 +257,7 @@ export function BoardDetail() {
                           key={item.id}
                           item={item}
                           onClick={(i) => navigate(`/boards/${board.id}/items/${i.id}`)}
-                          onEdit={setEditItem}
+                          onEdit={(i) => navigate(`/boards/${board.id}/items/${i.id}/edit`)}
                           onDelete={handleDeleteItem}
                         />
                       ))}
@@ -284,12 +282,6 @@ export function BoardDetail() {
         onClose={() => setCreateOpen(false)}
       />
 
-      <EditItemModal
-        open={!!editItem}
-        item={editItem}
-        users={users}
-        onClose={() => setEditItem(null)}
-      />
     </div>
   );
 }
