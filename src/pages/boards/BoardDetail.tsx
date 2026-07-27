@@ -155,7 +155,7 @@ export function BoardDetail() {
           </button>
         </div>
         {board.description && (
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{board.description}</p>
+          <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">{board.description}</p>
         )}
       </div>
 
