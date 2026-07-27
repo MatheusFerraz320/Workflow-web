@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 const navItems = [
   { icon: Home, label: 'Início', path: '/' },
   { icon: User, label: 'Meu Perfil', path: '/profile' },
+  { icon: LayoutDashboard, label: 'Metricas', path: '/metrics' },
 ];
 
 const roleLabels: Record<string, string> = {
