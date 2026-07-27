@@ -13,11 +13,15 @@ import {
   ArrowUp,
   ArrowDown,
   MoreHorizontal,
+  CircleDot,
+  UserIcon,
+  CalendarDays,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useItemStore } from '@/stores/itemStore';
 import { useBoardStore } from '@/stores/boardStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useUsers } from '@/hooks/useUsers';
 import type { Priority, ItemStatus } from '@/types/item';
 
 const priorityConfig: Record<Priority, { label: string; className: string; icon: typeof Bolt }> = {
@@ -27,12 +31,26 @@ const priorityConfig: Record<Priority, { label: string; className: string; icon:
   URGENT: { label: 'Urgente', className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400', icon: AlertTriangle },
 };
 
-const statusConfig: Record<ItemStatus, { label: string; className: string }> = {
-  TODO: { label: 'A Fazer', className: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300' },
-  IN_PROGRESS: { label: 'Em Progresso', className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
-  REVIEW: { label: 'Revisão', className: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
-  DONE: { label: 'Concluído', className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+const statusConfig: Record<ItemStatus, { label: string; className: string; dot: string }> = {
+  TODO: { label: 'A Fazer', className: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300', dot: 'bg-gray-500' },
+  IN_PROGRESS: { label: 'Em Progresso', className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400', dot: 'bg-blue-500' },
+  REVIEW: { label: 'Revisão', className: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400', dot: 'bg-purple-500' },
+  DONE: { label: 'Concluído', className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400', dot: 'bg-green-500' },
 };
+
+const priorityOptions: { value: Priority; label: string }[] = [
+  { value: 'LOW', label: 'Baixa' },
+  { value: 'MEDIUM', label: 'Média' },
+  { value: 'HIGH', label: 'Alta' },
+  { value: 'URGENT', label: 'Urgente' },
+];
+
+const statusOptions: { value: ItemStatus; label: string }[] = [
+  { value: 'TODO', label: 'A Fazer' },
+  { value: 'IN_PROGRESS', label: 'Em Progresso' },
+  { value: 'REVIEW', label: 'Revisão' },
+  { value: 'DONE', label: 'Concluído' },
+];
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('pt-BR', {
@@ -68,9 +86,10 @@ function getInitials(name: string): string {
 export function ItemDetailPage() {
   const { boardId, itemId } = useParams<{ boardId: string; itemId: string }>();
   const navigate = useNavigate();
-  const { currentItem, fetchItem, createComment, deleteComment, isLoading } = useItemStore();
+  const { currentItem, fetchItem, createComment, deleteComment, updateItem, isLoading } = useItemStore();
   const { boards, fetchBoards } = useBoardStore();
   const user = useAuthStore((s) => s.user);
+  const { users } = useUsers();
   const [commentText, setCommentText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
@@ -124,7 +143,7 @@ export function ItemDetailPage() {
     if (!commentText.trim() || !itemId) return;
     setIsSubmitting(true);
     try {
-      await createComment({ content: commentText.trim(), itemId });
+      await createComment({ text: commentText.trim(), itemId });
       setCommentText('');
       toast.success('Comentário enviado!');
     } catch (err) {
@@ -146,8 +165,17 @@ export function ItemDetailPage() {
     }
   }
 
+  async function handleFieldUpdate(field: string, value: string | undefined) {
+    try {
+      await updateItem(item.id, { [field]: value });
+      toast.success('Item atualizado!');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao atualizar item');
+    }
+  }
+
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-4xl">
       <button
         onClick={() => navigate(`/boards/${boardId}`)}
         className="mb-5 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -156,164 +184,258 @@ export function ItemDetailPage() {
         {board ? board.name : 'Voltar'}
       </button>
 
-      <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
-        <div className="p-5 pb-0 sm:p-6">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-b2-100 text-sm font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
-                {author ? getInitials(author.name) : '?'}
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {author ? author.name : 'Sem responsável'}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {board?.name} · {formatDateTime(item.createdAt)}
-                </p>
-              </div>
-            </div>
-            <button className="rounded-full p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300">
-              <MoreHorizontal className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-
-        <div className="px-5 sm:px-6">
-          <h1 className="mt-4 text-xl font-bold leading-snug text-gray-900 dark:text-gray-100 sm:text-2xl">
-            {item.title}
-          </h1>
-
-          {item.description && (
-            <p className="mt-3 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
-              {item.description}
-            </p>
-          )}
-        </div>
-
-        <div className="px-5 pt-4 sm:px-6">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${priority.className}`}>
-              <PriorityIcon className="h-3.5 w-3.5" />
-              {priority.label}
-            </span>
-            <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}>
-              {status.label}
-            </span>
-            {item.dueDate && (
-              <span
-                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
-                  overdue
-                    ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                    : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-                }`}
-              >
-                <Calendar className="h-3.5 w-3.5" />
-                {formatDate(item.dueDate)}
-                {overdue && ' · atrasado'}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="mx-5 mt-4 flex items-center gap-1 border-t border-gray-100 pt-3 sm:mx-6 dark:border-gray-800">
-          <button
-            onClick={() => commentInputRef.current?.focus()}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
-          >
-            <MessageSquare className="h-4 w-4" />
-            Comentar{commentCount > 0 && ` (${commentCount})`}
-          </button>
-          <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800">
-            <Pencil className="h-4 w-4" />
-            Editar
-          </button>
-          <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400">
-            <Trash2 className="h-4 w-4" />
-            Excluir
-          </button>
-        </div>
-      </article>
-
-      <div className="mt-5 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
-        <div className="p-5 sm:p-6">
-          <div className="flex gap-3">
-            {user && (
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xs font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
-                {getInitials(user.name)}
-              </div>
-            )}
-            <div className="flex-1">
-              <textarea
-                ref={commentInputRef}
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleCreateComment();
-                  }
-                }}
-                placeholder="Escreva um comentário..."
-                rows={2}
-                className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
-              />
-              <div className="mt-2 flex justify-end">
-                <button
-                  onClick={handleCreateComment}
-                  disabled={!commentText.trim() || isSubmitting}
-                  className="flex items-center gap-2 rounded-full bg-b2-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-b2-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Send className="h-3.5 w-3.5" />
-                  )}
-                  Enviar
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <div className="min-w-0 flex-1">
+          <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+            <div className="p-5 pb-0 sm:p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-b2-100 text-sm font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+                    {author ? getInitials(author.name) : '?'}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      {author ? author.name : 'Sem responsável'}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {board?.name} · {formatDateTime(item.createdAt)}
+                    </p>
+                  </div>
+                </div>
+                <button className="rounded-full p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300">
+                  <MoreHorizontal className="h-5 w-5" />
                 </button>
               </div>
             </div>
+
+            <div className="px-5 sm:px-6">
+              <h1 className="mt-4 text-xl font-bold leading-snug text-gray-900 dark:text-gray-100 sm:text-2xl">
+                {item.title}
+              </h1>
+
+              {item.description && (
+                <p className="mt-3 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
+                  <span className="font-semibold text-gray-900 dark:text-gray-100">Contexto da tarefa:</span> <br />{item.description}
+                </p>
+              )}
+            </div>
+
+            <div className="px-5 pt-4 sm:px-6">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${priority.className}`}>
+                  <PriorityIcon className="h-3.5 w-3.5" />
+                  {priority.label}
+                </span>
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}>
+                  <span className={`h-2 w-2 rounded-full ${status.dot}`} />
+                  {status.label}
+                </span>
+                {item.dueDate && (
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+                      overdue
+                        ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                        : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                    }`}
+                  >
+                    <Calendar className="h-3.5 w-3.5" />
+                    {formatDate(item.dueDate)}
+                    {overdue && ' · atrasado'}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="mx-5 mt-4 flex items-center gap-1 border-t border-gray-100 pt-3 sm:mx-6 dark:border-gray-800">
+              <button
+                onClick={() => commentInputRef.current?.focus()}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Comentar{commentCount > 0 && ` (${commentCount})`}
+              </button>
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800">
+                <Pencil className="h-4 w-4" />
+                Editar
+              </button>
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400">
+                <Trash2 className="h-4 w-4" />
+                Excluir
+              </button>
+            </div>
+          </article>
+
+          <div className="mt-5 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+            <div className="p-5 sm:p-6">
+              <div className="flex gap-3">
+                {user && (
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xs font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+                    {getInitials(user.name)}
+                  </div>
+                )}
+                <div className="flex-1">
+                  <textarea
+                    ref={commentInputRef}
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleCreateComment();
+                      }
+                    }}
+                    placeholder="Escreva um comentário..."
+                    rows={2}
+                    className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+                  />
+                  <div className="mt-2 flex justify-end">
+                    <button
+                      onClick={handleCreateComment}
+                      disabled={!commentText.trim() || isSubmitting}
+                      className="flex items-center gap-2 rounded-full bg-b2-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-b2-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Send className="h-3.5 w-3.5" />
+                      )}
+                      Enviar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {item.comments && item.comments.length > 0 ? (
+              <div className="border-t border-gray-100 dark:border-gray-800">
+                {item.comments.map((comment) => (
+                  <div key={comment.id} className="flex gap-3 border-b border-gray-50 p-5 last:border-b-0 sm:px-6 dark:border-gray-800/50">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                      {getInitials(comment.author.name)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                          {comment.author.name}
+                        </span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">
+                          {formatDateTime(comment.createdAt)}
+                        </span>
+                        <div className="flex-1" />
+                        {user?.id === comment.authorId && (
+                          <button
+                            onClick={() => handleDeleteComment(comment.id)}
+                            className="rounded p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+                            title="Excluir comentário"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
+                      <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{comment.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="border-t border-gray-100 px-5 py-8 text-center dark:border-gray-800">
+                <MessageSquare className="mx-auto mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" />
+                <p className="text-sm text-gray-400 dark:text-gray-500">
+                  Nenhum comentário ainda
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
-        {item.comments && item.comments.length > 0 ? (
-          <div className="border-t border-gray-100 dark:border-gray-800">
-            {item.comments.map((comment) => (
-              <div key={comment.id} className="flex gap-3 border-b border-gray-50 p-5 last:border-b-0 sm:px-6 dark:border-gray-800/50">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-                  {getInitials(comment.author.name)}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                      {comment.author.name}
-                    </span>
-                    <span className="text-xs text-gray-400 dark:text-gray-500">
-                      {formatDateTime(comment.createdAt)}
-                    </span>
-                    <div className="flex-1" />
-                    {user?.id === comment.authorId && (
-                      <button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="rounded p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
-                        title="Excluir comentário"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    )}
+        <aside className="w-full shrink-0 lg:w-72">
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+            <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-gray-100">Detalhes</h2>
+
+            <div className="space-y-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                  <CircleDot className="h-3.5 w-3.5" />
+                  Status
+                </label>
+                <select
+                  value={item.status}
+                  onChange={(e) => handleFieldUpdate('status', e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 transition-colors focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
+                >
+                  {statusOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                  <UserIcon className="h-3.5 w-3.5" />
+                  Responsável
+                </label>
+                <select
+                  value={item.assigneeId ?? ''}
+                  onChange={(e) => handleFieldUpdate('assigneeId', e.target.value || undefined)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 transition-colors focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
+                >
+                  <option value="">Nenhum</option>
+                  {users.map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                  <Bolt className="h-3.5 w-3.5" />
+                  Prioridade
+                </label>
+                <select
+                  value={item.priority}
+                  onChange={(e) => handleFieldUpdate('priority', e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 transition-colors focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
+                >
+                  {priorityOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                  <CalendarDays className="h-3.5 w-3.5" />
+                  Vencimento
+                </label>
+                <input
+                  type="date"
+                  value={item.dueDate ? new Date(item.dueDate).toISOString().split('T')[0] : ''}
+                  onChange={(e) => handleFieldUpdate('dueDate', e.target.value ? new Date(e.target.value).toISOString() : undefined)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 transition-colors focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
+                />
+              </div>
+
+              <div className="border-t border-gray-100 pt-4 dark:border-gray-800">
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">Criado em</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">{formatDateTime(item.createdAt)}</p>
                   </div>
-                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{comment.content}</p>
+                  <div>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">Atualizado em</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">{formatDateTime(item.updatedAt)}</p>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        ) : (
-          <div className="border-t border-gray-100 px-5 py-8 text-center dark:border-gray-800">
-            <MessageSquare className="mx-auto mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" />
-            <p className="text-sm text-gray-400 dark:text-gray-500">
-              Nenhum comentário ainda
-            </p>
-          </div>
-        )}
+        </aside>
       </div>
     </div>
   );

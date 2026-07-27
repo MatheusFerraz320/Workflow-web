@@ -13,7 +13,7 @@ export interface Subtask {
 
 export interface Comment {
   id: string;
-  content: string;
+  text: string;
   authorId: string;
   itemId: string;
   createdAt: string;
