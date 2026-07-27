@@ -18,7 +18,6 @@ const navItems = [
   { icon: Home, label: 'Inicio', path: '/' },
   { icon: Briefcase, label: 'Meu Trabalho', path: '/my-work' },
   { icon: User, label: 'Meu Perfil', path: '/profile' },
-  { icon: LayoutDashboard, label: 'Metricas', path: '/metrics' },
 ];
 
 const roleLabels: Record<string, string> = {

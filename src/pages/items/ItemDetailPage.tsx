@@ -26,6 +26,8 @@ import { useItemStore } from '@/stores/itemStore';
 import { useBoardStore } from '@/stores/boardStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useUsers } from '@/hooks/useUsers';
+import { useAlertDialog } from '@/hooks/useAlertDialog';
+import { AlertDialog } from '@/components/ui/AlertDialog';
 import { Select } from '@/components/ui/Select';
 import { RichTextEditor } from '@/components/ui/RichTextEditor';
 import type { Priority, ItemStatus } from '@/types/item';
@@ -87,6 +89,7 @@ export function ItemDetailPage() {
   const [commentText, setCommentText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const alertDialog = useAlertDialog();
 
   const board = boards.find((b) => b.id === boardId);
 
@@ -153,14 +156,19 @@ export function ItemDetailPage() {
   }
 
   async function handleDeleteComment(commentId: string) {
-    if (!confirm('Deseja excluir este comentário?')) return;
-    try {
-      await deleteComment(commentId);
-      toast.success('Comentário excluído!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao excluir comentário';
-      toast.error(message);
-    }
+    alertDialog.confirm({
+      title: 'Excluir este comentário?',
+      description: 'Esta ação não pode ser desfeita.',
+      onConfirm: async () => {
+        try {
+          await deleteComment(commentId);
+          toast.success('Comentário excluído!');
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Erro ao excluir comentário';
+          toast.error(message);
+        }
+      },
+    });
   }
 
   async function handleFieldUpdate(field: string, value: string | undefined) {
@@ -175,14 +183,19 @@ export function ItemDetailPage() {
 
   async function handleDeleteItem() {
     if (!item) return;
-    if (!confirm(`Deseja excluir o item "${item.title}"?`)) return;
-    try {
-      await deleteItem(item.id);
-      toast.success('Item excluído!');
-      navigate(`/boards/${boardId}`);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao excluir item');
-    }
+    alertDialog.confirm({
+      title: `Excluir item "${item.title}"?`,
+      description: 'Esta ação não pode ser desfeita.',
+      onConfirm: async () => {
+        try {
+          await deleteItem(item.id);
+          toast.success('Item excluído!');
+          navigate(`/boards/${boardId}`);
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : 'Erro ao excluir item');
+        }
+      },
+    });
   }
 
   return (
@@ -487,6 +500,14 @@ export function ItemDetailPage() {
           </div>
         </aside>
       </div>
+
+      <AlertDialog
+        open={alertDialog.open}
+        title={alertDialog.title}
+        description={alertDialog.description}
+        onConfirm={alertDialog.onConfirm}
+        onCancel={alertDialog.cancel}
+      />
     </div>
   );
 }

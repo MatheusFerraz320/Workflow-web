@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/authStore';
 import { useUserStore } from '@/stores/userStore';
 import { EditUserModal } from '@/components/users/EditUserModal';
+import { useAlertDialog } from '@/hooks/useAlertDialog';
+import { AlertDialog } from '@/components/ui/AlertDialog';
 import type { User, UserRole } from '@/types/user';
 
 const roleConfig: Record<UserRole, { label: string; className: string }> = {
@@ -60,6 +62,7 @@ export function Users() {
   const currentUser = useAuthStore((s) => s.user);
   const [search, setSearch] = useState('');
   const [editUser, setEditUser] = useState<User | null>(null);
+  const alertDialog = useAlertDialog();
 
   useEffect(() => {
     fetchUsers();
@@ -77,14 +80,19 @@ export function Users() {
       toast.warning('Você não pode excluir seu próprio usuário');
       return;
     }
-    if (!confirm(`Deseja excluir o colaborador "${user.name}"?`)) return;
-    try {
-      await deleteUser(user.id);
-      toast.success('Colaborador excluído com sucesso!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao excluir colaborador';
-      toast.error(message);
-    }
+    alertDialog.confirm({
+      title: `Excluir colaborador "${user.name}"?`,
+      description: 'Esta ação não pode ser desfeita.',
+      onConfirm: async () => {
+        try {
+          await deleteUser(user.id);
+          toast.success('Colaborador excluído com sucesso!');
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Erro ao excluir colaborador';
+          toast.error(message);
+        }
+      },
+    });
   }
 
   return (
@@ -247,6 +255,13 @@ export function Users() {
         open={!!editUser}
         user={editUser}
         onClose={() => setEditUser(null)}
+      />
+      <AlertDialog
+        open={alertDialog.open}
+        title={alertDialog.title}
+        description={alertDialog.description}
+        onConfirm={alertDialog.onConfirm}
+        onCancel={alertDialog.cancel}
       />
     </div>
   );

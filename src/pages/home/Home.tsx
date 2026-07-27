@@ -6,6 +6,8 @@ import { BoardCard } from '@/components/boards/BoardCard';
 import { CreateBoardModal } from '@/components/boards/CreateBoardModal';
 import { EditBoardModal } from '@/components/boards/EditBoardModal';
 import { toast } from 'sonner';
+import { useAlertDialog } from '@/hooks/useAlertDialog';
+import { AlertDialog } from '@/components/ui/AlertDialog';
 import type { Board } from '@/types/board';
 
 export function Home() {
@@ -15,20 +17,26 @@ export function Home() {
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editBoard, setEditBoard] = useState<Board | null>(null);
+  const alertDialog = useAlertDialog();
 
   useEffect(() => {
     fetchBoards();
   }, [fetchBoards]);
 
   async function handleDelete(board: Board) {
-    if (!confirm(`Deseja excluir o board "${board.name}"?`)) return;
-    try {
-      await deleteBoard(board.id);
-      toast.success('Quadro excluído com sucesso!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao excluir board';
-      toast.error(message);
-    }
+    alertDialog.confirm({
+      title: `Excluir board "${board.name}"?`,
+      description: 'Todos os itens deste board serão removidos.',
+      onConfirm: async () => {
+        try {
+          await deleteBoard(board.id);
+          toast.success('Quadro excluído com sucesso!');
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Erro ao excluir board';
+          toast.error(message);
+        }
+      },
+    });
   }
 
   return (
@@ -120,6 +128,13 @@ export function Home() {
 
       <CreateBoardModal open={createOpen} onClose={() => setCreateOpen(false)} />
       <EditBoardModal open={!!editBoard} board={editBoard} onClose={() => setEditBoard(null)} />
+      <AlertDialog
+        open={alertDialog.open}
+        title={alertDialog.title}
+        description={alertDialog.description}
+        onConfirm={alertDialog.onConfirm}
+        onCancel={alertDialog.cancel}
+      />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { toast } from 'sonner';
 import { useBoardStore } from '@/stores/boardStore';
 import { useItemStore } from '@/stores/itemStore';
 import { useUsers } from '@/hooks/useUsers';
+import { useAlertDialog } from '@/hooks/useAlertDialog';
+import { AlertDialog } from '@/components/ui/AlertDialog';
 import { ItemCard, CreateItemModal } from '@/components/boards/items';
 import type { Board } from '@/types/board';
 import type { Item, ItemStatus, Priority } from '@/types/item';
@@ -43,6 +45,7 @@ export function BoardDetail() {
     REVIEW: false,
     DONE: false,
   });
+  const alertDialog = useAlertDialog();
 
   useEffect(() => {
     if (boards.length === 0) {
@@ -100,14 +103,19 @@ export function BoardDetail() {
   }
 
   async function handleDeleteItem(item: Item) {
-    if (!confirm(`Deseja excluir o item "${item.title}"?`)) return;
-    try {
-      await deleteItem(item.id);
-      toast.success('Item excluído com sucesso!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao excluir item';
-      toast.error(message);
-    }
+    alertDialog.confirm({
+      title: `Excluir item "${item.title}"?`,
+      description: 'Esta ação não pode ser desfeita.',
+      onConfirm: async () => {
+        try {
+          await deleteItem(item.id);
+          toast.success('Item excluído com sucesso!');
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Erro ao excluir item';
+          toast.error(message);
+        }
+      },
+    });
   }
 
   const isLoading = boardsLoading || itemsLoading;
@@ -282,6 +290,13 @@ export function BoardDetail() {
         onClose={() => setCreateOpen(false)}
       />
 
+      <AlertDialog
+        open={alertDialog.open}
+        title={alertDialog.title}
+        description={alertDialog.description}
+        onConfirm={alertDialog.onConfirm}
+        onCancel={alertDialog.cancel}
+      />
     </div>
   );
 }
