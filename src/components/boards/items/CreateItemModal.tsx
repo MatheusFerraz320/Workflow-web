@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { RichTextEditor } from '@/components/ui/RichTextEditor';
 import { useItemStore } from '@/stores/itemStore';
 import { toast } from 'sonner';
 import type { Priority, ItemStatus, CreateItemDto } from '@/types/item';
@@ -100,16 +101,14 @@ export function CreateItemModal({ open, boardId, initialStatus = 'TODO', users =
             required
           />
 
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Descrição
             </label>
-            <textarea
-              placeholder="Opcional"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-b2-500"
+            <RichTextEditor
+              content={description}
+              onChange={setDescription}
+              placeholder="Descreva o item em detalhes..."
             />
           </div>
 
