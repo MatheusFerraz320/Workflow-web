@@ -27,7 +27,6 @@ import { useBoardStore } from '@/stores/boardStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useUsers } from '@/hooks/useUsers';
 import { Select } from '@/components/ui/Select';
-import { EditItemModal } from '@/components/boards/items';
 import { RichTextEditor } from '@/components/ui/RichTextEditor';
 import type { Priority, ItemStatus } from '@/types/item';
 
@@ -69,10 +68,6 @@ function formatDateTime(dateStr: string): string {
   });
 }
 
-function isOverdue(dateStr: string): boolean {
-  return new Date(dateStr) < new Date();
-}
-
 function getInitials(name: string): string {
   return name
     .split(' ')
@@ -92,7 +87,6 @@ export function ItemDetailPage() {
   const [commentText, setCommentText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const board = boards.find((b) => b.id === boardId);
 
@@ -135,7 +129,6 @@ export function ItemDetailPage() {
   const priority = priorityConfig[item.priority];
   const status = statusConfig[item.status];
   const PriorityIcon = priority.icon;
-  const overdue = item.dueDate && isOverdue(item.dueDate) && item.status !== 'DONE';
   const commentCount = item.comments?.length ?? 0;
 
   const assigneeOptions = [
@@ -181,6 +174,7 @@ export function ItemDetailPage() {
   }
 
   async function handleDeleteItem() {
+    if (!item) return;
     if (!confirm(`Deseja excluir o item "${item.title}"?`)) return;
     try {
       await deleteItem(item.id);
@@ -227,7 +221,7 @@ export function ItemDetailPage() {
                 <button
                   onClick={() => {
                     setMenuOpen(false);
-                    setEditModalOpen(true);
+                    navigate(`/boards/${boardId}/items/${itemId}/edit`);
                   }}
                   className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
@@ -298,10 +292,13 @@ export function ItemDetailPage() {
                 />
               </div>
             </div>
+          )}
 
-            <div className="mx-5 mt-4 flex items-center gap-1 border-t border-gray-100 pt-3 sm:mx-6 dark:border-gray-800">
+          {/* Action Bar */}
+          <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <div className="flex items-center gap-1 px-4 py-2">
               <button
-                onClick={() => commentInputRef.current?.focus()}
+                onClick={() => document.getElementById('comment-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
               >
                 <MessageSquare className="h-4 w-4" />
@@ -314,14 +311,19 @@ export function ItemDetailPage() {
                 <Pencil className="h-4 w-4" />
                 Editar
               </button>
-              <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400">
+              <button
+                onClick={handleDeleteItem}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+              >
                 <Trash2 className="h-4 w-4" />
                 Excluir
               </button>
             </div>
+          </div>
 
-            {/* Comment Input */}
-            <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
+          {/* Comment Input */}
+          <div id="comment-section" className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <div className="p-5">
               <div className="flex gap-3">
                 {user && (
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xs font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
@@ -354,7 +356,7 @@ export function ItemDetailPage() {
 
             {/* Timeline */}
             {item.comments && item.comments.length > 0 ? (
-              <div className="px-5 py-4">
+              <div className="border-t border-gray-100 px-5 py-4 dark:border-gray-800">
                 {item.comments.map((comment, index) => (
                   <div key={comment.id} className="relative flex gap-3">
                     {/* Timeline line + dot */}
@@ -368,7 +370,7 @@ export function ItemDetailPage() {
                     </div>
 
                     {/* Comment content */}
-                    <div className={`min-w-0 flex-1 pb-5 ${index === (item.comments?.length ?? 0) - 1 ? 'pb-0' : ''}`}>
+                    <div className={`min-w-0 flex-1 ${index === (item.comments?.length ?? 0) - 1 ? '' : 'pb-5'}`}>
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                           {comment.author.name}
@@ -396,7 +398,7 @@ export function ItemDetailPage() {
                 ))}
               </div>
             ) : (
-              <div className="px-5 py-10 text-center">
+              <div className="border-t border-gray-100 px-5 py-10 text-center dark:border-gray-800">
                 <MessageSquare className="mx-auto mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" />
                 <p className="text-sm text-gray-400 dark:text-gray-500">
                   Nenhum comentário ainda
@@ -485,13 +487,6 @@ export function ItemDetailPage() {
           </div>
         </aside>
       </div>
-
-      <EditItemModal
-        open={editModalOpen}
-        item={item}
-        users={users}
-        onClose={() => setEditModalOpen(false)}
-      />
     </div>
   );
 }

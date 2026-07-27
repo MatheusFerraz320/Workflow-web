@@ -3,7 +3,6 @@ import {
   X,
   Pencil,
   Type,
-  AlignLeft,
   Flag,
   CircleDot,
   User,
