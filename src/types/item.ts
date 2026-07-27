@@ -4,13 +4,6 @@ export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 
 export type ItemStatus = 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'DONE';
 
-export interface Subtask {
-  id: string;
-  title: string;
-  completed: boolean;
-  itemId: string;
-}
-
 export interface Comment {
   id: string;
   text: string;
@@ -35,7 +28,6 @@ export interface Item {
   updatedAt: string;
   assignee?: User | null;
   board?: { id: string; name: string; color?: string };
-  subtasks?: Subtask[];
   comments?: Comment[];
 }
 

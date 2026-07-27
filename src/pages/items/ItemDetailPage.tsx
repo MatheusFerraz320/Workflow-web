@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   ChevronRight,
-  FileText,
   AlignLeft,
   Send,
   Loader2,
@@ -272,21 +271,76 @@ export function ItemDetailPage() {
       <div className="flex flex-col gap-6 lg:flex-row">
         {/* Left — Content */}
         <div className="min-w-0 flex-1 space-y-5">
-          {/* Title + Type Badge */}
+          {/* Title */}
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-b2-50 px-2.5 py-1 text-xs font-semibold text-b2-700 dark:bg-b2-950/30 dark:text-b2-400">
-                <FileText className="h-3.5 w-3.5" />
-                Tarefa
-              </span>
-              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${status.bgClass}`}>
-                <span className={`h-2 w-2 rounded-full ${status.dot}`} />
-                {status.label}
-              </span>
-            </div>
             <h1 className="text-2xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:text-3xl">
               {item.title}
             </h1>
+          </div>
+
+          {/* Metadata Bar */}
+          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+            <div className="flex items-center gap-2" title="Criado por">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-b2-100 text-[10px] font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+                {item.assignee?.name ? getInitials(item.assignee.name) : '?'}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] leading-none text-gray-400 uppercase tracking-wider">Criado por</span>
+                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                  {item.assignee?.name ?? '—'}
+                </span>
+              </div>
+            </div>
+
+            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
+
+            <div className="flex items-center gap-2" title="Responsável">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-b2-100 text-[10px] font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+                {item.assignee?.name ? getInitials(item.assignee.name) : '?'}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] leading-none text-gray-400 uppercase tracking-wider">Responsável</span>
+                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                  {item.assignee?.name ?? 'Não atribuído'}
+                </span>
+              </div>
+            </div>
+
+            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
+
+            <div className="flex flex-col">
+              <span className="text-[10px] leading-none text-gray-400 uppercase tracking-wider">Status</span>
+              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold ${status.bgClass} rounded-full px-2 py-0.5 mt-0.5`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} />
+                {status.label}
+              </span>
+            </div>
+
+            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
+
+            <div className="flex flex-col">
+              <span className="text-[10px] leading-none text-gray-400 uppercase tracking-wider">Prioridade</span>
+              <span className={`inline-flex items-center gap-1 text-xs font-semibold mt-0.5 ${
+                item.priority === 'URGENT' ? 'text-red-600 dark:text-red-400' :
+                item.priority === 'HIGH' ? 'text-orange-600 dark:text-orange-400' :
+                item.priority === 'MEDIUM' ? 'text-yellow-600 dark:text-yellow-400' :
+                'text-green-600 dark:text-green-400'
+              }`}>
+                <PriorityIcon className="h-3.5 w-3.5" />
+                {priority.label}
+              </span>
+            </div>
+
+            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
+
+            {item.dueDate && (
+              <div className="flex flex-col">
+                <span className="text-[10px] leading-none text-gray-400 uppercase tracking-wider">Vencimento</span>
+                <span className="text-xs font-medium text-gray-700 dark:text-gray-300 mt-0.5">
+                  {new Date(item.dueDate).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Context Section */}
@@ -414,10 +468,10 @@ export function ItemDetailPage() {
               <div className="border-t border-gray-100 px-5 py-10 text-center dark:border-gray-800">
                 <MessageSquare className="mx-auto mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" />
                 <p className="text-sm text-gray-400 dark:text-gray-500">
-                  Nenhum comentário ainda
+                  Nenhuma atualização ainda
                 </p>
                 <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
-                  Seja o primeiro a comentar
+                  Seja o primeiro a atualizar a tarefa
                 </p>
               </div>
             )}

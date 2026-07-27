@@ -1,4 +1,4 @@
-import { Pin, PinOff, Calendar, CheckSquare, AlertTriangle, Bolt, ArrowUp, ArrowDown, LayoutDashboard } from 'lucide-react';
+import { Pin, PinOff, Calendar, AlertTriangle, Bolt, ArrowUp, ArrowDown, LayoutDashboard } from 'lucide-react';
 import type { Item, Priority } from '@/types/item';
 
 interface WorkItemCardProps {
@@ -51,8 +51,6 @@ function isOverdue(dateStr: string): boolean {
 export function WorkItemCard({ item, boardName, boardColor, isPinned, onTogglePin, onClick }: WorkItemCardProps) {
   const priority = priorityConfig[item.priority];
   const PriorityIcon = priority.icon;
-  const completedSubtasks = item.subtasks?.filter((s) => s.completed).length ?? 0;
-  const totalSubtasks = item.subtasks?.length ?? 0;
   const overdue = item.dueDate && isOverdue(item.dueDate) && item.status !== 'DONE';
 
   return (
@@ -126,12 +124,6 @@ export function WorkItemCard({ item, boardName, boardColor, isPinned, onTogglePi
               </span>
             )}
 
-            {totalSubtasks > 0 && (
-              <span className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
-                <CheckSquare className="h-3.5 w-3.5" />
-                {completedSubtasks}/{totalSubtasks}
-              </span>
-            )}
           </div>
         </div>
       </div>
