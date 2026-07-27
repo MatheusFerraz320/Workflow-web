@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Item, ItemStatus } from '@/types/item';
+import type { Item } from '@/types/item';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const PINNED_KEY = 'b2work:pinnedItems';

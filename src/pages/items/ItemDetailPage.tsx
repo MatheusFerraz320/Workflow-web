@@ -144,7 +144,7 @@ export function ItemDetailPage() {
     if (!commentText.trim() || !itemId) return;
     setIsSubmitting(true);
     try {
-      await createComment({ text: commentText.trim(), itemId });
+      await createComment({ content: commentText.trim(), itemId });
       setCommentText('');
       toast.success('Comentário enviado!');
     } catch (err) {
@@ -167,6 +167,7 @@ export function ItemDetailPage() {
   }
 
   async function handleFieldUpdate(field: string, value: string | undefined) {
+    if (!item) return;
     try {
       await updateItem(item.id, { [field]: value });
       toast.success('Item atualizado!');
@@ -255,7 +256,10 @@ export function ItemDetailPage() {
                 <MessageSquare className="h-4 w-4" />
                 Comentar{commentCount > 0 && ` (${commentCount})`}
               </button>
-              <button className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800">
+              <button
+                onClick={() => navigate(`/boards/${boardId}/items/${itemId}/edit`)}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
                 <Pencil className="h-4 w-4" />
                 Editar
               </button>

@@ -5,6 +5,7 @@ import { Login } from '@/pages/login/Login';
 import { Home } from '@/pages/home/Home';
 import { BoardDetail } from '@/pages/boards/BoardDetail';
 import { ItemDetailPage } from '@/pages/items/ItemDetailPage';
+import { EditItemPage } from '@/pages/items/EditItemPage';
 import { Register } from '@/pages/register/Register';
 import { Users } from '@/pages/users/Users';
 import { ProfilePage } from '@/pages/profile/ProfilePage';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/my-work" element={<MyWork />} />
             <Route path="/boards/:id" element={<BoardDetail />} />
             <Route path="/boards/:boardId/items/:itemId" element={<ItemDetailPage />} />
+            <Route path="/boards/:boardId/items/:itemId/edit" element={<EditItemPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/metrics" element={<Metrics />} />
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
