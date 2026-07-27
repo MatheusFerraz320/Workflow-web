@@ -9,6 +9,7 @@ import { Register } from '@/pages/register/Register';
 import { Users } from '@/pages/users/Users';
 import { ProfilePage } from '@/pages/profile/ProfilePage';
 import { Metrics } from '@/pages/metrics/Metrics';
+import { MyWork } from '@/pages/my-work/MyWork';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { LoadingScreen } from '@/components/LoadingScreen';
@@ -38,6 +39,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/my-work" element={<MyWork />} />
             <Route path="/boards/:id" element={<BoardDetail />} />
             <Route path="/boards/:boardId/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/profile" element={<ProfilePage />} />

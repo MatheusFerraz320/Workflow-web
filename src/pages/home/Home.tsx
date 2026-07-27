@@ -56,7 +56,7 @@ export function Home() {
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-              Quadros de Trabalho
+              Quadros de Trabalho da <span className="text-b2-600 dark:text-b2-400">B2</span>
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Gerencie seus projetos e tarefas
