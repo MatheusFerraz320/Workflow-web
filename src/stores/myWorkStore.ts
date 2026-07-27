@@ -50,7 +50,7 @@ export const useMyWorkStore = create<MyWorkState>((set, get) => ({
   fetchMyWork: async () => {
     set({ isLoading: true });
     try {
-      const res = await fetch(`${API_URL}/items/my-work`, {
+      const res = await fetch(`${API_URL}/users/me/assigned-items`, {
         headers: getAuthHeaders(),
       });
       if (!res.ok) {

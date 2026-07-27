@@ -34,6 +34,7 @@ export interface Item {
   createdAt: string;
   updatedAt: string;
   assignee?: User | null;
+  board?: { id: string; name: string; color?: string };
   subtasks?: Subtask[];
   comments?: Comment[];
 }

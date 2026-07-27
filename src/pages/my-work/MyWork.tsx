@@ -1,18 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Loader2, Users, Pin, Layers } from 'lucide-react';
+import { Briefcase, Loader2, Users, Pin, Layers, CircleCheck, Clock, Eye, CheckCircle2 } from 'lucide-react';
 import { useMyWorkStore } from '@/stores/myWorkStore';
-import { useBoardStore } from '@/stores/boardStore';
-import { WorkColumn } from '@/components/my-work/WorkColumn';
+import { WorkListItem } from '@/components/my-work/WorkListItem';
 import type { Item, ItemStatus } from '@/types/item';
 import { cn } from '@/lib/utils';
-
-const columns: { status: ItemStatus; label: string; dotColor: string; headerBg: string; headerText: string }[] = [
-  { status: 'TODO', label: 'Pendentes', dotColor: 'bg-gray-500', headerBg: 'bg-gray-50 dark:bg-gray-800', headerText: 'text-gray-700 dark:text-gray-300' },
-  { status: 'IN_PROGRESS', label: 'Em Progresso', dotColor: 'bg-blue-500', headerBg: 'bg-blue-50 dark:bg-blue-950/30', headerText: 'text-blue-700 dark:text-blue-300' },
-  { status: 'REVIEW', label: 'Revisão', dotColor: 'bg-purple-500', headerBg: 'bg-purple-50 dark:bg-purple-950/30', headerText: 'text-purple-700 dark:text-purple-300' },
-  { status: 'DONE', label: 'Concluído', dotColor: 'bg-green-500', headerBg: 'bg-green-50 dark:bg-green-950/30', headerText: 'text-green-700 dark:text-green-300' },
-];
 
 const filterTabs = [
   { value: 'all' as const, label: 'Todos', icon: Layers },
@@ -20,49 +12,105 @@ const filterTabs = [
   { value: 'pinned' as const, label: 'Fixados', icon: Pin },
 ];
 
+const statusSummaryConfig: {
+  status: ItemStatus;
+  label: string;
+  icon: typeof Clock;
+  bgClass: string;
+  textClass: string;
+  dotClass: string;
+}[] = [
+  {
+    status: 'TODO',
+    label: 'Pendentes',
+    icon: Clock,
+    bgClass: 'bg-gray-50 dark:bg-gray-800/60',
+    textClass: 'text-gray-600 dark:text-gray-400',
+    dotClass: 'bg-gray-400',
+  },
+  {
+    status: 'IN_PROGRESS',
+    label: 'Em Progresso',
+    icon: Eye,
+    bgClass: 'bg-blue-50 dark:bg-blue-950/30',
+    textClass: 'text-blue-600 dark:text-blue-400',
+    dotClass: 'bg-blue-500',
+  },
+  {
+    status: 'REVIEW',
+    label: 'Revisão',
+    icon: CircleCheck,
+    bgClass: 'bg-purple-50 dark:bg-purple-950/30',
+    textClass: 'text-purple-600 dark:text-purple-400',
+    dotClass: 'bg-purple-500',
+  },
+  {
+    status: 'DONE',
+    label: 'Concluído',
+    icon: CheckCircle2,
+    bgClass: 'bg-green-50 dark:bg-green-950/30',
+    textClass: 'text-green-600 dark:text-green-400',
+    dotClass: 'bg-green-500',
+  },
+];
+
+const priorityOrder: Record<string, number> = { URGENT: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+
 export function MyWork() {
   const navigate = useNavigate();
   const { assignedItems, pinnedItemIds, isLoading, filter, fetchMyWork, setFilter, togglePin } = useMyWorkStore();
-  const { boards, fetchBoards } = useBoardStore();
 
   useEffect(() => {
     fetchMyWork();
-    if (boards.length === 0) {
-      fetchBoards();
-    }
-  }, [fetchMyWork, fetchBoards, boards.length]);
+  }, [fetchMyWork]);
 
   const displayItems = useMemo(() => {
     const pinnedSet = new Set(pinnedItemIds);
 
+    let items: Item[];
     switch (filter) {
       case 'assigned':
-        return assignedItems;
+        items = assignedItems;
+        break;
       case 'pinned':
-        return assignedItems.filter((item) => pinnedSet.has(item.id));
+        items = assignedItems.filter((item) => pinnedSet.has(item.id));
+        break;
       case 'all':
       default: {
         const merged = new Map<string, Item>();
         assignedItems.forEach((item) => merged.set(item.id, item));
-        return Array.from(merged.values());
+        items = Array.from(merged.values());
+        break;
       }
     }
+
+    return [...items].sort((a, b) => {
+      const pDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+      if (pDiff !== 0) return pDiff;
+
+      if (a.dueDate && b.dueDate)
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      if (a.dueDate) return -1;
+      if (b.dueDate) return 1;
+
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
   }, [assignedItems, pinnedItemIds, filter]);
 
-  const itemsByStatus = useMemo(() => {
-    const acc: Record<ItemStatus, Item[]> = { TODO: [], IN_PROGRESS: [], REVIEW: [], DONE: [] };
-    displayItems.forEach((item) => {
-      acc[item.status].push(item);
+  const statusCounts = useMemo(() => {
+    const counts: Record<ItemStatus, number> = { TODO: 0, IN_PROGRESS: 0, REVIEW: 0, DONE: 0 };
+    assignedItems.forEach((item) => {
+      counts[item.status]++;
     });
-    return acc;
-  }, [displayItems]);
+    return counts;
+  }, [assignedItems]);
 
   function handleClickItem(item: Item) {
     navigate(`/boards/${item.boardId}/items/${item.id}`);
   }
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto max-w-4xl">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3">
@@ -118,40 +166,70 @@ export function MyWork() {
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
         </div>
-      ) : displayItems.length === 0 ? (
+      ) : assignedItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 py-20 dark:border-gray-700">
           <Briefcase className="mb-3 h-12 w-12 text-gray-300 dark:text-gray-600" />
           <p className="text-base font-medium text-gray-500 dark:text-gray-400">
-            {filter === 'pinned'
-              ? 'Nenhum item fixado'
-              : filter === 'assigned'
-                ? 'Nenhum item atribuído a você'
-                : 'Nenhum item para exibir'}
+            Nenhum item atribuído a você
           </p>
           <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
-            {filter === 'pinned'
-              ? 'Fixe itens dos boards para acompanhá-los aqui'
-              : 'Quando itens forem atribuídos a você, eles aparecerão aqui'}
+            Quando itens forem atribuídos a você, eles aparecerão aqui
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {columns.map((col) => (
-            <WorkColumn
-              key={col.status}
-              status={col.status}
-              label={col.label}
-              dotColor={col.dotColor}
-              headerBg={col.headerBg}
-              headerText={col.headerText}
-              items={itemsByStatus[col.status]}
-              boards={boards}
-              pinnedItemIds={pinnedItemIds}
-              onTogglePin={togglePin}
-              onClickItem={handleClickItem}
-            />
-          ))}
-        </div>
+        <>
+          {/* Summary Cards */}
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {statusSummaryConfig.map((cfg) => {
+              const Icon = cfg.icon;
+              const count = statusCounts[cfg.status];
+              return (
+                <div
+                  key={cfg.status}
+                  className={cn(
+                    'flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 dark:border-gray-700',
+                    cfg.bgClass,
+                  )}
+                >
+                  <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-lg', cfg.bgClass)}>
+                    <Icon className={cn('h-5 w-5', cfg.textClass)} />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{count}</p>
+                    <p className={cn('text-xs font-medium', cfg.textClass)}>{cfg.label}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Flat List */}
+          {displayItems.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 py-16 dark:border-gray-700">
+              <Briefcase className="mb-3 h-10 w-10 text-gray-300 dark:text-gray-600" />
+              <p className="text-base font-medium text-gray-500 dark:text-gray-400">
+                {filter === 'pinned' ? 'Nenhum item fixado' : 'Nenhum item para exibir'}
+              </p>
+              <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
+                {filter === 'pinned'
+                  ? 'Fixe itens dos boards para acompanhá-los aqui'
+                  : 'Tente ajustar os filtros'}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {displayItems.map((item) => (
+                <WorkListItem
+                  key={item.id}
+                  item={item}
+                  isPinned={pinnedItemIds.includes(item.id)}
+                  onTogglePin={togglePin}
+                  onClick={handleClickItem}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
