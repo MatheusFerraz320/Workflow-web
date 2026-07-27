@@ -7,6 +7,7 @@ import {
   ChevronRight,
   LogOut,
   User,
+  Briefcase,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,7 +15,8 @@ import { useBoardStore } from '@/stores/boardStore';
 import { toast } from 'sonner';
 
 const navItems = [
-  { icon: Home, label: 'Início', path: '/' },
+  { icon: Home, label: 'Inicio', path: '/' },
+  { icon: Briefcase, label: 'Meu Trabalho', path: '/my-work' },
   { icon: User, label: 'Meu Perfil', path: '/profile' },
   { icon: LayoutDashboard, label: 'Metricas', path: '/metrics' },
 ];
