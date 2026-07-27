@@ -85,6 +85,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       throw new Error(data.message || 'Erro ao atualizar perfil');
     }
 
-    set({ user: data });
+    set((state) => ({ user: state.user ? { ...state.user, ...data } : data }));
   },
 }));

@@ -64,7 +64,7 @@ export const useBoardStore = create<BoardState>((set) => ({
       throw new Error(data.message || 'Erro ao atualizar board');
     }
     set((state) => ({
-      boards: state.boards.map((b) => (b.id === id ? data : b)),
+      boards: state.boards.map((b) => (b.id === id ? { ...b, ...data } : b)),
     }));
     return data as Board;
   },

@@ -86,8 +86,8 @@ export const useItemStore = create<ItemState>((set) => ({
       throw new Error(data.message || 'Erro ao atualizar item');
     }
     set((state) => ({
-      itemsByBoard: state.itemsByBoard.map((i) => (i.id === id ? data : i)),
-      currentItem: state.currentItem?.id === id ? data : state.currentItem,
+      itemsByBoard: state.itemsByBoard.map((i) => (i.id === id ? { ...i, ...data } : i)),
+      currentItem: state.currentItem?.id === id ? { ...state.currentItem, ...data } : state.currentItem,
     }));
     return data as Item;
   },

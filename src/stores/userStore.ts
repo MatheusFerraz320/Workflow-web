@@ -48,11 +48,10 @@ export const useUserStore = create<UserState>((set) => ({
     if (!res.ok) {
       throw new Error(data.message || 'Erro ao atualizar usuário');
     }
-    const updated = data as User;
     set((state) => ({
-      users: state.users.map((u) => (u.id === id ? updated : u)),
+      users: state.users.map((u) => (u.id === id ? { ...u, ...data } : u)),
     }));
-    return updated;
+    return data as User;
   },
 
   deleteUser: async (id) => {
