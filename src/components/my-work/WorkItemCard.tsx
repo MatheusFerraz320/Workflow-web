@@ -71,9 +71,10 @@ export function WorkItemCard({ item, boardName, boardColor, isPinned, onTogglePi
           </h4>
 
           {item.description && (
-            <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-              {item.description}
-            </p>
+            <div
+              className="tiptap mt-0.5 text-sm text-gray-500 dark:text-gray-400 line-clamp-1"
+              dangerouslySetInnerHTML={{ __html: item.description }}
+            />
           )}
 
           <div className="mt-2 flex flex-wrap items-center gap-3">
