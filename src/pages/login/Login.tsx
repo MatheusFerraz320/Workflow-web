@@ -54,7 +54,7 @@ export function Login() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
               </svg>
             </div>
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-b2-300/80">B2 WorkFlow</span>
+            <span className="text-lg font-semibold uppercase tracking-[0.2em] text-b2-100">B2 WorkFlow</span>
           </div>
 
           <h1 className="mb-4 text-5xl font-bold leading-tight text-white">
@@ -65,8 +65,8 @@ export function Login() {
           </h1>
 
           <p className="max-w-md text-lg leading-relaxed text-white">
-            Transforme tarefas repetitivas em fluxos inteligentes. 
-            Produtividade que escala com o seu negócio.
+            Gerenciamento de tarefas e 
+            Produtividade que escala.
           </p>
 
           <div className="mt-10 flex items-center gap-6 text-sm text-white">

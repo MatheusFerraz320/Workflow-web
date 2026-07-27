@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, Shield, Calendar, Save, X } from 'lucide-react';
+import { ArrowLeft, Mail, Shield, Calendar, Save, X, Camera } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
@@ -97,8 +97,17 @@ export function ProfilePage() {
 
       <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
         <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-b2-100 text-2xl font-bold text-b2-700 dark:bg-b2-900/40 dark:text-b2-400">
-            {initials}
+          <div className="relative">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-b2-100 text-2xl font-bold text-b2-700 dark:bg-b2-900/40 dark:text-b2-400">
+              {initials}
+            </div>
+            <button
+              type="button"
+              title="Alterar foto"
+              className="absolute bottom-0 right-0 rounded-full bg-b2-600 p-1.5 text-white shadow-md transition-colors hover:bg-b2-700"
+            >
+              <Camera className="h-3.5 w-3.5" />
+            </button>
           </div>
           <div className="text-center sm:text-left">
             <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{user.name}</h1>

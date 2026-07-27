@@ -16,6 +16,7 @@ import {
   CircleDot,
   UserIcon,
   CalendarDays,
+  Paperclip,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useItemStore } from '@/stores/itemStore';
@@ -288,7 +289,14 @@ export function ItemDetailPage() {
                     rows={2}
                     className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
                   />
-                  <div className="mt-2 flex justify-end">
+                  <div className="mt-2 flex items-center justify-between">
+                    <button
+                      type="button"
+                      title="Anexar arquivo"
+                      className="rounded-full p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                    >
+                      <Paperclip className="h-4 w-4" />
+                    </button>
                     <button
                       onClick={handleCreateComment}
                       disabled={!commentText.trim() || isSubmitting}
