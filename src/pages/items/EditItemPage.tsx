@@ -75,7 +75,7 @@ export function EditItemPage() {
   if (isLoading && !loaded) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-600 dark:text-brand-400" />
       </div>
     );
   }
@@ -88,7 +88,7 @@ export function EditItemPage() {
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Item não encontrado</p>
         <button
           onClick={() => navigate(`/boards/${boardId}`)}
-          className="mt-4 text-sm text-b2-600 hover:text-b2-700 dark:text-b2-400"
+          className="mt-4 text-sm text-brand-600 hover:text-brand-700 dark:text-brand-400"
         >
           Voltar ao board
         </button>
@@ -141,7 +141,7 @@ export function EditItemPage() {
           <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="p-5 sm:p-6">
               <div className="mb-5 flex items-center gap-2">
-                <FileText className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+                <FileText className="h-5 w-5 text-brand-600 dark:text-brand-400" />
                 <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Editar Item</h1>
               </div>
 
@@ -154,7 +154,7 @@ export function EditItemPage() {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition-all focus:border-b2-500 focus:ring-4 focus:ring-b2-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                     placeholder="Título do item"
                   />
                 </div>
@@ -213,7 +213,7 @@ export function EditItemPage() {
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition-all focus:border-b2-500 focus:ring-4 focus:ring-b2-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                 />
               </div>
             </div>
@@ -222,7 +222,7 @@ export function EditItemPage() {
               <button
                 onClick={handleSave}
                 disabled={isSaving || !title.trim()}
-                className="flex items-center justify-center gap-2 rounded-xl bg-b2-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-b2-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isSaving ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

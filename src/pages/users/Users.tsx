@@ -41,7 +41,7 @@ function formatDate(dateStr: string): string {
 }
 
 const avatarColors = [
-  'bg-b2-100 text-b2-700 dark:bg-b2-900/40 dark:text-b2-400',
+  'bg-brand-100 text-brand-700 dark:bg-brand-900/40 dark:text-brand-400',
   'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400',
   'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
   'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
@@ -99,8 +99,8 @@ export function Users() {
     <div className="mx-auto max-w-5xl">
       <div className="mb-8">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-b2-100 dark:bg-b2-900/40">
-            <UsersIcon className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 dark:bg-brand-900/40">
+            <UsersIcon className="h-5 w-5 text-brand-600 dark:text-brand-400" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Colaboradores</h1>
@@ -119,14 +119,14 @@ export function Users() {
             placeholder="Buscar por nome ou email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-b2-500"
+            className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-brand-500"
           />
         </div>
       </div>
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-brand-600 dark:text-brand-400" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 py-16 dark:border-gray-700">

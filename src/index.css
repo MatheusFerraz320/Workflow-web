@@ -3,17 +3,17 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-b2-50: #e6fbff;
-  --color-b2-100: #b3f5ff;
-  --color-b2-200: #80eeff;
-  --color-b2-300: #4de7ff;
-  --color-b2-400: #1ae0ff;
-  --color-b2-500: #00d4ff;
-  --color-b2-600: #00b8e6;
-  --color-b2-700: #0099cc;
-  --color-b2-800: #007aa3;
-  --color-b2-900: #006080;
-  --color-b2-950: #003d52;
+  --color-brand-50: #e6fbff;
+  --color-brand-100: #b3f5ff;
+  --color-brand-200: #80eeff;
+  --color-brand-300: #4de7ff;
+  --color-brand-400: #1ae0ff;
+  --color-brand-500: #00d4ff;
+  --color-brand-600: #00b8e6;
+  --color-brand-700: #0099cc;
+  --color-brand-800: #007aa3;
+  --color-brand-900: #006080;
+  --color-brand-950: #003d52;
 }
 
 body {
@@ -91,7 +91,7 @@ body {
 .tiptap ul[data-type="taskList"] li label input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
-  accent-color: var(--color-b2-600);
+  accent-color: var(--color-brand-600);
   cursor: pointer;
 }
 
@@ -147,7 +147,7 @@ body {
 }
 
 .tiptap blockquote {
-  border-left: 3px solid var(--color-b2-400);
+  border-left: 3px solid var(--color-brand-400);
   padding-left: 1rem;
   margin: 0.5rem 0;
   color: #6b7280;

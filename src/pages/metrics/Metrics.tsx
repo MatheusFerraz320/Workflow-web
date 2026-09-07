@@ -111,10 +111,10 @@ export function Metrics() {
   return (
     <div className="mx-auto max-w-6xl">
       {/* Banner */}
-      <div className="mb-8 overflow-hidden rounded-2xl bg-gradient-to-r from-b2-50 to-b2-100/60 p-6 sm:p-8 dark:from-b2-950/40 dark:to-b2-900/20">
+      <div className="mb-8 overflow-hidden rounded-2xl bg-gradient-to-r from-brand-50 to-brand-100/60 p-6 sm:p-8 dark:from-brand-950/40 dark:to-brand-900/20">
         <div className="flex items-center gap-4">
           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/80 shadow-sm dark:bg-gray-800/80">
-            <BarChart3 className="h-7 w-7 text-b2-600 dark:text-b2-400" />
+            <BarChart3 className="h-7 w-7 text-brand-600 dark:text-brand-400" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl dark:text-gray-100">
@@ -130,8 +130,8 @@ export function Metrics() {
       {/* KPI Cards */}
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         <KpiCard
-          icon={<ClipboardList className="h-5 w-5 text-b2-600 dark:text-b2-400" />}
-          iconBg="bg-b2-100 dark:bg-b2-900/40"
+          icon={<ClipboardList className="h-5 w-5 text-brand-600 dark:text-brand-400" />}
+          iconBg="bg-brand-100 dark:bg-brand-900/40"
           label="Total de Itens"
           value={loading ? '...' : summary?.totalItems ?? 0}
         />
@@ -160,8 +160,8 @@ export function Metrics() {
           value={loading ? '...' : summary?.overdueItems ?? 0}
         />
         <KpiCard
-          icon={<TrendingUp className="h-5 w-5 text-b2-600 dark:text-b2-400" />}
-          iconBg="bg-b2-100 dark:bg-b2-900/40"
+          icon={<TrendingUp className="h-5 w-5 text-brand-600 dark:text-brand-400" />}
+          iconBg="bg-brand-100 dark:bg-brand-900/40"
           label="Taxa de Conclusão"
           value={loading ? '...' : `${summary?.completionRate ?? 0}%`}
         />
@@ -172,8 +172,8 @@ export function Metrics() {
         {/* Itens por Status - PieChart */}
         <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-900">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-b2-100 dark:bg-b2-900/40">
-              <LayoutDashboard className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/40">
+              <LayoutDashboard className="h-5 w-5 text-brand-600 dark:text-brand-400" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Itens por Status</h2>
@@ -215,8 +215,8 @@ export function Metrics() {
         {/* Itens por Prioridade - BarChart */}
         <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-900">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-b2-100 dark:bg-b2-900/40">
-              <AlertTriangle className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/40">
+              <AlertTriangle className="h-5 w-5 text-brand-600 dark:text-brand-400" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Itens por Prioridade</h2>
@@ -249,8 +249,8 @@ export function Metrics() {
       {/* Charts Row 2 - Top Boards */}
       <div className="mb-6 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-900">
         <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-b2-100 dark:bg-b2-900/40">
-            <BarChart3 className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/40">
+            <BarChart3 className="h-5 w-5 text-brand-600 dark:text-brand-400" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Boards com Mais Itens</h2>
@@ -287,8 +287,8 @@ export function Metrics() {
       {/* Próximas Entregas */}
       <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-900">
         <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-b2-100 dark:bg-b2-900/40">
-            <CalendarClock className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/40">
+            <CalendarClock className="h-5 w-5 text-brand-600 dark:text-brand-400" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Próximas Entregas</h2>

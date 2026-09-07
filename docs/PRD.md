@@ -1,9 +1,9 @@
-# B2.Work - Product Requirements Document (PRD)
+# Workflow - Product Requirements Document (PRD)
 
 > **Versão:** 1.0.0  
 > **Data:** 19/07/2026  
 > **Status:** Em Desenvolvimento  
-> **Autor:** Dev - B2 Marketing Digital
+> **Autor:** Dev
 
 ---
 
@@ -24,19 +24,19 @@
 
 ## 1. Visão Geral do Produto
 
-### 1.1 O que é o B2.Work?
+### 1.1 O que é o Workflow?
 
-O **B2.Work** é uma aplicação de **workflow e gerenciamento de tarefas** inspirada no Monday.com, desenvolvida especificamente para a **B2 Marketing Digital**.
+O **Workflow** é uma aplicação de **workflow e gerenciamento de tarefas** inspirada no Monday.com, desenvolvida especificamente para o dia a dia de equipes de marketing digital.
 
 ### 1.2 Por que estamos construindo?
 
-| Problema | Solução B2.Work |
+| Problema | Solução Workflow |
 |----------|-----------------|
 |  Custo alto do Monday.com | Redução de custo em ~70% |
 |  Interface pesada e lenta | UI minimalista e rápida |
 |  Dados sensíveis em servidores externos | Dados 100% próprios (LGPD) |
 |  Ferramenta genérica | Feita sob medida para Marketing Digital |
-|  Sem integração com nosso fluxo | Integrada com processos B2 |
+|  Sem integração com nosso fluxo | Integrada com processos internos |
 
 ### 1.3 Valor Entregue
 
@@ -370,7 +370,7 @@ Responsável recebe notificação
 
 | Requisito | Descrição |
 |-----------|-----------|
-| Design | Minimalista, cores da B2 (Azul Neon provavelmente algo entre cyan) |
+| Design | Minimalista, cores da marca (Azul Neon provavelmente algo entre cyan) |
 | Responsividade | Mobile-first, funciona em tablets e desktops |
 | Acessibilidade | Contraste adequado, Modo escuro ( dark mode ) |
 | Idiomas | Português (Brasil) |

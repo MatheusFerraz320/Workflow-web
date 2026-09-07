@@ -92,7 +92,7 @@ export function EditUserModal({ open, user, onClose }: EditUserModalProps) {
             id="edit-email"
             label="Email"
             type="email"
-            placeholder="email@b2.com"
+            placeholder="email@empresa.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -106,7 +106,7 @@ export function EditUserModal({ open, user, onClose }: EditUserModalProps) {
               id="edit-role"
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-brand-500"
             >
               {roleOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>

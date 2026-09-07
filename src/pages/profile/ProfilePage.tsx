@@ -98,13 +98,13 @@ export function ProfilePage() {
       <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <div className="relative">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-b2-100 text-2xl font-bold text-b2-700 dark:bg-b2-900/40 dark:text-b2-400">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-brand-100 text-2xl font-bold text-brand-700 dark:bg-brand-900/40 dark:text-brand-400">
               {initials}
             </div>
             <button
               type="button"
               title="Alterar foto"
-              className="absolute bottom-0 right-0 rounded-full bg-b2-600 p-1.5 text-white shadow-md transition-colors hover:bg-b2-700"
+              className="absolute bottom-0 right-0 rounded-full bg-brand-600 p-1.5 text-white shadow-md transition-colors hover:bg-brand-700"
             >
               <Camera className="h-3.5 w-3.5" />
             </button>

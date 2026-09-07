@@ -78,7 +78,7 @@ export function BoardCard({ board, onEdit, onDelete }: BoardCardProps) {
             Criado em {formatDate(board.createdAt)}
           </span>
         </div>
-        <ArrowRight className="h-4 w-4 text-gray-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-b2-600 dark:text-gray-600 dark:group-hover:text-b2-400" />
+        <ArrowRight className="h-4 w-4 text-gray-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-brand-600 dark:text-gray-600 dark:group-hover:text-brand-400" />
       </div>
     </div>
   );

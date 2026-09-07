@@ -47,10 +47,10 @@ export function Select({
           className={cn(
             'w-full appearance-none rounded-xl border border-gray-200 bg-white text-gray-900',
             'transition-all duration-200',
-            'focus:border-b2-500 focus:ring-4 focus:ring-b2-500/10 focus:outline-none',
+            'focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 focus:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
             'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100',
-            'dark:focus:border-b2-500 dark:focus:ring-b2-500/10',
+            'dark:focus:border-brand-500 dark:focus:ring-brand-500/10',
             'px-4 py-2.5 pr-10 text-sm',
             icon && 'pl-11',
             error && 'border-red-400 focus:border-red-500 focus:ring-red-500/10 dark:border-red-500',

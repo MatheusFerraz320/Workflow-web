@@ -94,7 +94,7 @@ export function WorkItemCard({ item, boardName, boardColor, isPinned, onTogglePi
             {item.assignee && (
               <div className="flex items-center gap-1.5">
                 <div
-                  className="flex h-6 w-6 items-center justify-center rounded-full bg-b2-100 text-[10px] font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400"
+                  className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-100 text-[10px] font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-400"
                   title={item.assignee.name}
                 >
                   {item.assignee.name
@@ -136,7 +136,7 @@ export function WorkItemCard({ item, boardName, boardColor, isPinned, onTogglePi
           }}
           className={`rounded-lg p-2 transition-colors ${
             isPinned
-              ? 'text-b2-600 hover:bg-b2-50 dark:text-b2-400 dark:hover:bg-b2-950/30'
+              ? 'text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-950/30'
               : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300'
           }`}
           title={isPinned ? 'Desafixar item' : 'Fixar item'}

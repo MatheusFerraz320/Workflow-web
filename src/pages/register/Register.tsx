@@ -105,8 +105,8 @@ export function Register() {
     <div className="mx-auto max-w-2xl">
       <div className="mb-8">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-b2-100 dark:bg-b2-900/40">
-            <UserPlus className="h-5 w-5 text-b2-600 dark:text-b2-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 dark:bg-brand-900/40">
+            <UserPlus className="h-5 w-5 text-brand-600 dark:text-brand-400" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Cadastrar Colaborador</h1>
@@ -131,7 +131,7 @@ export function Register() {
               id="email"
               label="Email"
               type="email"
-              placeholder="joao@b2.com"
+              placeholder="joao@empresa.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -159,7 +159,7 @@ export function Register() {
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value as UserRole)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-b2-500"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-brand-500"
               >
                 {roleOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>

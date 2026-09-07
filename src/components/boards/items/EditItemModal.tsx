@@ -104,7 +104,7 @@ export function EditItemModal({ open, item, users = [], onClose }: EditItemModal
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-100 px-8 py-5 dark:border-gray-800">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-b2-50 text-b2-600 dark:bg-b2-500/10 dark:text-b2-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400">
               <Pencil className="h-5 w-5" />
             </div>
             <div>

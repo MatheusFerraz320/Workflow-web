@@ -31,35 +31,35 @@ export function Login() {
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-950">
-      <div className="relative hidden w-1/3 items-center justify-center overflow-hidden md:flex bg-gradient-to-br from-b2-950 via-b2-700 to-b2-800">
+      <div className="relative hidden w-1/3 items-center justify-center overflow-hidden md:flex bg-gradient-to-br from-brand-950 via-brand-700 to-brand-800">
         {/* Floating Shapes */}
-        <div className="absolute top-[10%] left-[15%] h-24 w-24 rounded-3xl border border-b2-400/20 bg-b2-400/10 animate-float-slow backdrop-blur-sm" />
-        <div className="absolute top-[60%] left-[8%] h-16 w-16 rounded-full border border-b2-300/20 bg-b2-300/10 animate-float-medium backdrop-blur-sm" />
-        <div className="absolute top-[20%] right-[12%] h-32 w-32 rounded-full border border-b2-500/15 bg-b2-500/10 animate-float-fast backdrop-blur-sm" />
-        <div className="absolute bottom-[15%] right-[20%] h-20 w-20 rotate-45 rounded-2xl border border-b2-400/20 bg-b2-400/10 animate-float-medium backdrop-blur-sm" />
-        <div className="absolute top-[45%] left-[30%] h-12 w-12 rounded-xl border border-b2-300/15 bg-b2-300/10 animate-float-slow backdrop-blur-sm" />
-        <div className="absolute bottom-[30%] left-[50%] h-28 w-28 rounded-full border border-b2-200/10 bg-b2-200/5 animate-float-fast backdrop-blur-sm" />
-        <div className="absolute top-[75%] right-[35%] h-14 w-14 rounded-2xl border border-b2-400/15 bg-b2-400/8 animate-float-slow backdrop-blur-sm" />
-        <div className="absolute top-[5%] left-[55%] h-10 w-10 rotate-12 rounded-lg border border-b2-300/20 bg-b2-300/10 animate-float-medium backdrop-blur-sm" />
+        <div className="absolute top-[10%] left-[15%] h-24 w-24 rounded-3xl border border-brand-400/20 bg-brand-400/10 animate-float-slow backdrop-blur-sm" />
+        <div className="absolute top-[60%] left-[8%] h-16 w-16 rounded-full border border-brand-300/20 bg-brand-300/10 animate-float-medium backdrop-blur-sm" />
+        <div className="absolute top-[20%] right-[12%] h-32 w-32 rounded-full border border-brand-500/15 bg-brand-500/10 animate-float-fast backdrop-blur-sm" />
+        <div className="absolute bottom-[15%] right-[20%] h-20 w-20 rotate-45 rounded-2xl border border-brand-400/20 bg-brand-400/10 animate-float-medium backdrop-blur-sm" />
+        <div className="absolute top-[45%] left-[30%] h-12 w-12 rounded-xl border border-brand-300/15 bg-brand-300/10 animate-float-slow backdrop-blur-sm" />
+        <div className="absolute bottom-[30%] left-[50%] h-28 w-28 rounded-full border border-brand-200/10 bg-brand-200/5 animate-float-fast backdrop-blur-sm" />
+        <div className="absolute top-[75%] right-[35%] h-14 w-14 rounded-2xl border border-brand-400/15 bg-brand-400/8 animate-float-slow backdrop-blur-sm" />
+        <div className="absolute top-[5%] left-[55%] h-10 w-10 rotate-12 rounded-lg border border-brand-300/20 bg-brand-300/10 animate-float-medium backdrop-blur-sm" />
 
         {/* Glow Orbs */}
-        <div className="absolute top-[25%] left-[20%] h-64 w-64 rounded-full bg-b2-500/8 blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-[20%] right-[15%] h-48 w-48 rounded-full bg-b2-400/10 blur-3xl animate-pulse-slow animation-delay-2000" />
+        <div className="absolute top-[25%] left-[20%] h-64 w-64 rounded-full bg-brand-500/8 blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-[20%] right-[15%] h-48 w-48 rounded-full bg-brand-400/10 blur-3xl animate-pulse-slow animation-delay-2000" />
 
         {/* Content */}
         <div className="relative z-10 flex w-full flex-col items-center justify-center p-12 text-center">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-b2-400/20 border border-b2-400/30 backdrop-blur-sm">
-              <svg className="h-7 w-7 text-b2-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-400/20 border border-brand-400/30 backdrop-blur-sm">
+              <svg className="h-7 w-7 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
               </svg>
             </div>
-            <span className="text-lg font-semibold uppercase tracking-[0.2em] text-b2-100">B2 WorkFlow</span>
+            <span className="text-lg font-semibold uppercase tracking-[0.2em] text-brand-100">Workflow</span>
           </div>
 
           <h1 className="mb-4 text-5xl font-bold leading-tight text-white">
             Automatização do{' '}
-            <span className="bg-gradient-to-r from-b2-300 to-b2-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-300 to-brand-400 bg-clip-text text-transparent">
                workflow
             </span>
           </h1>
@@ -90,12 +90,12 @@ export function Login() {
         <div className="w-full max-w-md">
           {/* Mobile Brand */}
           <div className="mb-10 flex items-center gap-3 md:hidden">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-b2-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600">
               <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
               </svg>
             </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">B2.Work</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">Workflow</span>
           </div>
 
           {/* Header */}
@@ -138,7 +138,7 @@ export function Login() {
               <div className="flex items-center justify-end">
                 <a
                   href="#"
-                  className="text-sm font-medium text-b2-600 transition-colors hover:text-b2-700 dark:text-b2-400 dark:hover:text-b2-300"
+                  className="text-sm font-medium text-brand-600 transition-colors hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
                 >
                   Esqueceu a senha?
                 </a>
@@ -156,7 +156,7 @@ export function Login() {
           {/* Footer */}
           <p className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
             Não tem uma conta?{' '}
-            <span className="font-medium text-b2-600 dark:text-b2-400">
+            <span className="font-medium text-brand-600 dark:text-brand-400">
               Fale com o administrador
             </span>
           </p>

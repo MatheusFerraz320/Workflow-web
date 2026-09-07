@@ -114,7 +114,7 @@ export function MyWork() {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-b2-50 text-b2-600 dark:bg-b2-500/10 dark:text-b2-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400">
             <Briefcase className="h-6 w-6" />
           </div>
           <div>
@@ -138,7 +138,7 @@ export function MyWork() {
               className={cn(
                 'flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all',
                 isActive
-                  ? 'bg-b2-600 text-white shadow-lg shadow-b2-600/25'
+                  ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/25'
                   : 'bg-white text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700',
               )}
             >
@@ -164,7 +164,7 @@ export function MyWork() {
       {/* Content */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-brand-600 dark:text-brand-400" />
         </div>
       ) : assignedItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 py-20 dark:border-gray-700">

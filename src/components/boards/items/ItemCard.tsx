@@ -101,7 +101,7 @@ export function ItemCard({ item, onClick, onEdit, onDelete }: ItemCardProps) {
           {item.assignee && (
             <div className="flex items-center gap-1.5">
               <div
-                className="flex h-5 w-5 items-center justify-center rounded-full bg-b2-100 text-[9px] font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400"
+                className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-100 text-[9px] font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-400"
                 title={item.assignee.name}
               >
                 {item.assignee.name

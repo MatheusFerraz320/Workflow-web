@@ -142,7 +142,7 @@ export function WorkListItem({ item, isPinned, onTogglePin, onClick }: WorkListI
           }}
           className={`rounded-lg p-2 transition-colors ${
             isPinned
-              ? 'text-b2-600 hover:bg-b2-50 dark:text-b2-400 dark:hover:bg-b2-950/30'
+              ? 'text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-950/30'
               : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300'
           }`}
           title={isPinned ? 'Desafixar item' : 'Fixar item'}

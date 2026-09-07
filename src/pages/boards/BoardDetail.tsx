@@ -123,7 +123,7 @@ export function BoardDetail() {
   if (isLoading && !board) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-600 dark:text-brand-400" />
       </div>
     );
   }
@@ -166,7 +166,7 @@ export function BoardDetail() {
 
             <button
               onClick={() => openCreateForStatus('TODO')}
-              className="flex shrink-0 items-center gap-2 rounded-xl bg-b2-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-b2-700 hover:shadow-md"
+              className="flex shrink-0 items-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 hover:shadow-md"
             >
               <Plus className="h-4 w-4" />
               Novo Item
@@ -184,7 +184,7 @@ export function BoardDetail() {
             placeholder="Buscar item..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/15 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
+            className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/15 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
           />
         </div>
 
@@ -192,7 +192,7 @@ export function BoardDetail() {
           <select
             value={filterPriority}
             onChange={(e) => setFilterPriority(e.target.value as Priority | 'ALL')}
-            className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/15 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/15 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
           >
             {priorityOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -204,7 +204,7 @@ export function BoardDetail() {
           <select
             value={filterAssignee}
             onChange={(e) => setFilterAssignee(e.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-b2-500 focus:ring-2 focus:ring-b2-500/15 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/15 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
           >
             <option value="ALL">Todos</option>
             {uniqueAssignees.map((a) => (
@@ -291,7 +291,7 @@ export function BoardDetail() {
                       </p>
                       <button
                         onClick={() => openCreateForStatus(col.status)}
-                        className="mt-2 text-sm text-b2-600 transition-colors hover:text-b2-700 dark:text-b2-400"
+                        className="mt-2 text-sm text-brand-600 transition-colors hover:text-brand-700 dark:text-brand-400"
                       >
                         Criar primeiro item
                       </button>

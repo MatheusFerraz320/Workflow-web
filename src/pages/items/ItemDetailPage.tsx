@@ -109,7 +109,7 @@ export function ItemDetailPage() {
   if (isLoading && !item) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-b2-600 dark:text-b2-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-600 dark:text-brand-400" />
       </div>
     );
   }
@@ -120,7 +120,7 @@ export function ItemDetailPage() {
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Item não encontrado</p>
         <button
           onClick={() => navigate(`/boards/${boardId}`)}
-          className="mt-4 text-sm text-b2-600 hover:text-b2-700 dark:text-b2-400"
+          className="mt-4 text-sm text-brand-600 hover:text-brand-700 dark:text-brand-400"
         >
           Voltar ao board
         </button>
@@ -281,7 +281,7 @@ export function ItemDetailPage() {
           {/* Metadata Bar */}
           <div className="flex flex-wrap items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
             <div className="flex items-center gap-2" title="Criado por">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-b2-100 text-[10px] font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-100 text-[10px] font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-400">
                 {item.assignee?.name ? getInitials(item.assignee.name) : '?'}
               </div>
               <div className="flex flex-col">
@@ -295,7 +295,7 @@ export function ItemDetailPage() {
             <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
 
             <div className="flex items-center gap-2" title="Responsável">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-b2-100 text-[10px] font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-100 text-[10px] font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-400">
                 {item.assignee?.name ? getInitials(item.assignee.name) : '?'}
               </div>
               <div className="flex flex-col">
@@ -393,7 +393,7 @@ export function ItemDetailPage() {
             <div className="p-5">
               <div className="flex gap-3">
                 {user && (
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xs font-bold text-b2-700 dark:bg-b2-900/30 dark:text-b2-400">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-400">
                     {getInitials(user.name)}
                   </div>
                 )}
@@ -407,7 +407,7 @@ export function ItemDetailPage() {
                     <button
                       onClick={handleCreateComment}
                       disabled={!commentText.replace(/<[^>]*>/g, '').trim() || isSubmitting}
-                      className="flex items-center gap-2 rounded-lg bg-b2-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-b2-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -528,7 +528,7 @@ export function ItemDetailPage() {
                     type="date"
                     value={item.dueDate ? new Date(item.dueDate).toISOString().split('T')[0] : ''}
                     onChange={(e) => handleFieldUpdate('dueDate', e.target.value ? new Date(e.target.value).toISOString() : undefined)}
-                    className="w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-11 pr-4 text-sm text-gray-900 transition-all duration-200 focus:border-b2-500 focus:ring-4 focus:ring-b2-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-b2-500 dark:focus:ring-b2-500/10"
+                    className="w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-11 pr-4 text-sm text-gray-900 transition-all duration-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-brand-500 dark:focus:ring-brand-500/10"
                   />
                 </div>
               </div>

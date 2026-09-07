@@ -55,7 +55,7 @@ export function Sidebar() {
         to="/profile"
         className="flex flex-col items-center gap-2 border-b border-gray-200 px-4 py-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/50"
       >
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-b2-100 text-xl font-bold text-b2-700 dark:bg-b2-900/40 dark:text-b2-400">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl font-bold text-brand-700 dark:bg-brand-900/40 dark:text-brand-400">
           {initials}
         </div>
         {!collapsed && user && (
@@ -74,7 +74,7 @@ export function Sidebar() {
             className={cn(
               'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
               location.pathname === item.path
-                ? 'bg-b2-50 text-b2-700 dark:bg-b2-950/30 dark:text-b2-400'
+                ? 'bg-brand-50 text-brand-700 dark:bg-brand-950/30 dark:text-brand-400'
                 : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100',
             )}
           >
@@ -98,7 +98,7 @@ export function Sidebar() {
                   className={cn(
                     'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors',
                     location.pathname === `/boards/${board.id}`
-                      ? 'bg-b2-50 text-b2-700 dark:bg-b2-950/30 dark:text-b2-400'
+                      ? 'bg-brand-50 text-brand-700 dark:bg-brand-950/30 dark:text-brand-400'
                       : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100',
                   )}
                 >
