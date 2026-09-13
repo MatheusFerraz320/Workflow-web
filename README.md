@@ -77,6 +77,26 @@ npm run dev
 | `npm run build` | Typecheck (`tsc -b`) e build de produção |
 | `npm run lint` | Lint com oxlint |
 | `npm run preview` | Prévia do build de produção |
+| `npm run test:e2e` | Testes e2e com Cypress (headless) |
+| `npm run test:e2e:open` | Abre o runner interativo do Cypress |
+
+## Testes e2e (Cypress)
+
+O fluxo de autenticação é coberto com **Cypress** (`cypress/e2e/login.cy.ts`), com a API mockada via `cy.intercept` — não é preciso subir o backend. São três cenários:
+
+1. Login com credenciais válidas → token salvo no `localStorage` e navegação para a Home
+2. Credenciais inválidas → toast de erro exibido e permanência na página de login
+3. Acesso sem sessão a rota protegida → redirecionamento para `/login`
+
+Para rodar, o servidor de desenvolvimento precisa estar no ar (Vite na porta `5173`):
+
+```bash
+cp .env.example .env   # garante VITE_API_URL=http://localhost:3000
+npm run dev            # terminal 1
+npm run test:e2e       # terminal 2
+```
+
+> **Nota sobre CORS/segurança:** o frontend aponta para a API com CORS liberado e sem camadas extras de segurança, pois é um projeto de desenvolvimento/portfolio que não está em produção. Antes de qualquer deploy real, essas camadas devem ser endurecidas.
 
 ## Documentação
 
@@ -93,7 +113,7 @@ npm run dev
 - **Pin persistido no backend**, para que "fixados" seja compartilhado em qualquer dispositivo
 - **Busca global funcional** — o campo no navbar hoje é decorativo
 - **Limpeza de código morto** — `WorkColumn` e `EditItemModal` não são usados
-- **Testes automatizados e CI** — o projeto não possui testes nem pipeline
+- **CI** — pipeline de lint, build e Cypress (o projeto ainda não tem CI)
 - **Proxy do Vite** para a API em desenvolvimento (evita CORS) e plugin `@tailwindcss/typography` para estilizar as descrições ricas (`prose`)
 
 ## English
@@ -102,4 +122,4 @@ Workflow is a web application for managing team tasks on boards, inspired by Mon
 
 Boards (`/boards/:id`) group items into status columns (`TODO`, `IN_PROGRESS`, `REVIEW`, `DONE`). Each item has a priority (`LOW`, `MEDIUM`, `HIGH`, `URGENT`), an assignee, a due date and comments. The **My Work** screen lists items assigned to the logged-in user plus locally-pinned items (pin data is stored in `localStorage` for now). The **Metrics** screen summarizes boards, status and priorities through API endpoints. Authentication is JWT-based against the `workFlow-api` backend; `VITE_API_URL` configures the API base URL.
 
-All routes live behind an auth guard, and user management (`/users`) plus user registration (`/register`) require the `ADMIN` role. There are no automated tests yet, and drag-and-drop, notifications, sub-tasks, attachments and alternate views are planned but not implemented.
+All routes live behind an auth guard, and user management (`/users`) plus user registration (`/register`) require the `ADMIN` role. The auth flow is covered by Cypress e2e tests with a mocked API (`npm run test:e2e`). Drag-and-drop, notifications, sub-tasks, attachments and alternate views are planned but not implemented, and there is no CI pipeline yet.
